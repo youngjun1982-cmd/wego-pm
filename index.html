@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>위고 프로젝트 관리</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="위고 프로젝트">
+<meta name="theme-color" content="#1b2286">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+:root{color-scheme:light;
+ --bg:#eef2fb;--glow1:rgba(99,132,255,.28);--glow2:rgba(168,120,255,.22);--glow3:rgba(255,160,200,.18);
+ --card:rgba(255,255,255,.72);--card-border:rgba(255,255,255,.9);--card-shadow:0 8px 30px rgba(50,70,140,.08);
+ --surface:#ffffff;--surface2:#f3f5fb;--border:#e3e8f4;--text:#111a33;--text2:#55607a;--muted:#8a93ab;
+ --accent:#3b6cf6;--accent2:#7c5cf6;--on-accent:#fff;--s1:#3b6cf6;--s2:#8b5cf6;--s3:#22b8cf;
+ --good:#15803d;--good-bg:#dcfce7;--warn:#b45309;--warn-bg:#fef3c7;--info:#1d4ed8;--info-bg:#dbeafe;--crit:#b91c1c;--crit-bg:#fee2e2;--neutral:#4b5569;--neutral-bg:#e6eaf3;
+ --tile1:linear-gradient(135deg,#dbe6ff,#c7d4ff);--tile2:linear-gradient(135deg,#d9fbe8,#bff1d6);--tile3:linear-gradient(135deg,#ffe3e3,#ffcfd6);--tile4:linear-gradient(135deg,#efe3ff,#dcd0ff);--tile5:linear-gradient(135deg,#fff1d6,#ffe2b3);
+}
+:root[data-theme="dark"]{color-scheme:dark;
+ --bg:#0a1020;--glow1:rgba(45,212,191,.16);--glow2:rgba(124,92,246,.2);--glow3:rgba(56,189,248,.1);
+ --card:rgba(17,26,46,.78);--card-border:rgba(255,255,255,.07);--card-shadow:0 10px 36px rgba(0,0,0,.35);
+ --surface:#131c31;--surface2:#1a2540;--border:rgba(255,255,255,.09);--text:#e8edf8;--text2:#aab4cc;--muted:#6f7a94;
+ --accent:#2dd4bf;--accent2:#7c5cf6;--on-accent:#06110f;--s1:#2dd4bf;--s2:#8b5cf6;--s3:#38bdf8;
+ --good:#34d399;--good-bg:rgba(52,211,153,.14);--warn:#fbbf24;--warn-bg:rgba(251,191,36,.14);--info:#60a5fa;--info-bg:rgba(96,165,250,.14);--crit:#f87171;--crit-bg:rgba(248,113,113,.14);--neutral:#aab4cc;--neutral-bg:rgba(255,255,255,.08);
+ --tile1:linear-gradient(135deg,rgba(45,212,191,.25),rgba(45,212,191,.08));--tile2:linear-gradient(135deg,rgba(52,211,153,.25),rgba(52,211,153,.08));--tile3:linear-gradient(135deg,rgba(248,113,113,.25),rgba(248,113,113,.08));--tile4:linear-gradient(135deg,rgba(139,92,246,.3),rgba(139,92,246,.1));--tile5:linear-gradient(135deg,rgba(251,191,36,.25),rgba(251,191,36,.08));
+}
+/* ===== Glass themes ===== */
+:root[data-theme="glass"]{color-scheme:light;
+ --bg:#e6dcff;
+ --card:rgba(255,255,255,.34);--card-border:rgba(255,255,255,.85);--card-shadow:0 26px 50px rgba(90,70,170,.2),0 2px 6px rgba(90,70,170,.08),inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 30px rgba(255,255,255,.35);
+ --edge:linear-gradient(135deg,rgba(255,255,255,1) 0%,rgba(255,255,255,.25) 30%,rgba(110,200,255,.75) 55%,rgba(255,110,200,.85) 80%,rgba(255,190,120,.95) 100%);
+ --surface:rgba(255,255,255,.58);--surface2:rgba(255,255,255,.42);--border:rgba(255,255,255,.8);--text:#1a1642;--text2:#4b4684;--muted:#7b76ad;
+ --accent:#7c5cf6;--accent2:#ff5fae;--on-accent:#fff;--s1:#7c5cf6;--s2:#ff5fae;--s3:#38bdf8;
+ --good:#0f8a5f;--good-bg:rgba(80,230,170,.32);--warn:#a85a00;--warn-bg:rgba(255,200,90,.4);--info:#1d4ed8;--info-bg:rgba(110,170,255,.35);--crit:#b3123f;--crit-bg:rgba(255,120,170,.32);--neutral:#4b4684;--neutral-bg:rgba(255,255,255,.5);
+ --tile1:linear-gradient(145deg,#a78bff,#6c5cf6);--tile2:linear-gradient(145deg,#6cc2ff,#3b82f6);--tile3:linear-gradient(145deg,#ff9ad0,#ff5fae);--tile4:linear-gradient(145deg,#ffbe7a,#ff7a3d);--tile5:linear-gradient(145deg,#8be9ff,#22b8cf);
+ --glow-a:rgba(124,92,246,.55);--glow-b:rgba(255,95,174,.45);
+}
+:root[data-theme="glass-dark"]{color-scheme:dark;
+ --bg:#07061a;
+ --card:rgba(255,255,255,.075);--card-border:rgba(255,255,255,.22);--card-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.28),inset 0 0 40px rgba(120,100,255,.08);
+ --edge:linear-gradient(135deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,.08) 30%,rgba(56,189,248,.8) 55%,rgba(255,95,174,.85) 80%,rgba(255,138,61,.9) 100%);
+ --surface:rgba(255,255,255,.1);--surface2:rgba(255,255,255,.07);--border:rgba(255,255,255,.16);--text:#f4f2ff;--text2:#bdb7e6;--muted:#8781b4;
+ --accent:#38bdf8;--accent2:#ff5fae;--on-accent:#06110f;--s1:#38bdf8;--s2:#a78bfa;--s3:#ff8a3d;
+ --good:#4ade80;--good-bg:rgba(74,222,128,.18);--warn:#fbbf24;--warn-bg:rgba(251,191,36,.18);--info:#60a5fa;--info-bg:rgba(96,165,250,.18);--crit:#fb7185;--crit-bg:rgba(251,113,133,.2);--neutral:#bdb7e6;--neutral-bg:rgba(255,255,255,.1);
+ --tile1:linear-gradient(145deg,#a78bff,#6c5cf6);--tile2:linear-gradient(145deg,#5fd0ff,#2563eb);--tile3:linear-gradient(145deg,#ff8fcb,#ff3d9a);--tile4:linear-gradient(145deg,#ffb36b,#ff6a1f);--tile5:linear-gradient(145deg,#7ff0ff,#06b6d4);
+ --glow-a:rgba(56,189,248,.7);--glow-b:rgba(255,95,174,.6);
+}
+:root[data-theme="glass"] body::before{background:linear-gradient(118deg,#ffd2c2 0%,#f1c4ff 26%,#c9ccff 52%,#b9e5ff 76%,#ffd9c9 100%)}
+:root[data-theme="glass"] body::after{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(560px 460px at 10% 15%,rgba(255,150,110,.7),transparent 70%),radial-gradient(680px 560px at 90% 10%,rgba(140,110,255,.7),transparent 70%),radial-gradient(620px 560px at 60% 100%,rgba(80,200,255,.6),transparent 70%),radial-gradient(420px 360px at 30% 85%,rgba(255,120,200,.5),transparent 70%)}
+:root[data-theme="glass-dark"] body::before{background:radial-gradient(760px 620px at 85% 90%,rgba(255,120,50,.55),transparent 70%),radial-gradient(760px 640px at 50% 45%,rgba(124,92,246,.55),transparent 70%),radial-gradient(640px 520px at 8% 10%,rgba(56,189,248,.5),transparent 70%),radial-gradient(520px 420px at 15% 90%,rgba(255,95,174,.45),transparent 70%),#07061a}
+:root[data-theme^="glass"] .card,:root[data-theme^="glass"] .side{backdrop-filter:blur(42px) saturate(1.6);-webkit-backdrop-filter:blur(42px) saturate(1.6);border:1px solid var(--card-border);position:relative;isolation:isolate}
+:root[data-theme^="glass"] .card{border-radius:26px}
+:root[data-theme^="glass"] .card::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;background:var(--edge);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;z-index:-1;opacity:.9}
+:root[data-theme^="glass"] .card::after{content:"";position:absolute;left:8%;right:8%;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);pointer-events:none;z-index:-1}
+:root[data-theme^="glass"] .side{border-width:0 1px 0 0}
+:root[data-theme^="glass"] .kpi .tile,:root[data-theme^="glass"] .card .ch .ic,:root[data-theme^="glass"] .list-row .av{color:#fff!important;border-radius:14px;box-shadow:0 12px 26px var(--glow-a),inset 0 1px 0 rgba(255,255,255,.65),inset 0 -2px 0 rgba(0,0,0,.12)}
+:root[data-theme^="glass"] .kpi .tile{width:46px;height:46px}
+:root[data-theme^="glass"] .btn,:root[data-theme^="glass"] .pill,:root[data-theme^="glass"] .seg,:root[data-theme^="glass"] .sub-tabs,:root[data-theme^="glass"] select,:root[data-theme^="glass"] input,:root[data-theme^="glass"] textarea{backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-color:var(--card-border);box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+:root[data-theme^="glass"] .btn.primary,:root[data-theme^="glass"] .sub-tabs button.on,:root[data-theme^="glass"] .nav.on{background:linear-gradient(135deg,#7c5cf6,#ff5fae 70%,#ff8a3d);color:#fff;box-shadow:0 10px 26px var(--glow-a),inset 0 1px 0 rgba(255,255,255,.45)}
+:root[data-theme^="glass"] .greet h1 em{background-image:linear-gradient(90deg,#7c5cf6,#ff5fae,#ff8a3d);-webkit-background-clip:text;background-clip:text;color:transparent}
+:root[data-theme="glass-dark"] .greet h1 em{background-image:linear-gradient(90deg,#38bdf8,#a78bfa,#ff5fae)}
+:root[data-theme^="glass"] th{background:var(--surface2)}
+:root[data-theme^="glass"] .modal{background:var(--card);backdrop-filter:blur(40px) saturate(1.5);-webkit-backdrop-filter:blur(40px) saturate(1.5);border-color:var(--card-border)}
+:root[data-theme="glass"] .modal{background:rgba(255,255,255,.7)}
+:root[data-theme^="glass"] .kpi.link:hover{transform:translateY(-4px) scale(1.01)}
+:root[data-theme^="glass"] .hbar .t i,:root[data-theme^="glass"] .bar-h i{background:linear-gradient(90deg,#38bdf8,#7c5cf6,#ff5fae)}
+:root[data-theme^="glass"] .stack{height:14px}
+/* glass chart styling */
+:root[data-theme^="glass"] .chart .grid line{stroke:rgba(255,255,255,.35)}
+:root[data-theme="glass-dark"] .chart .grid line{stroke:rgba(255,255,255,.1)}
+:root[data-theme^="glass"] .chart .glow{filter:drop-shadow(0 0 7px var(--glow-a)) drop-shadow(0 4px 10px var(--glow-b))}
+:root[data-theme^="glass"] .chart .bar{stroke:rgba(255,255,255,.55);stroke-width:1}
+:root[data-theme^="glass"] .tooltip{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:var(--card);border-color:var(--card-border)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,sans-serif;font-size:14px;line-height:1.5;transition:background .3s,color .3s}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(600px 400px at 8% 0%,var(--glow1),transparent 70%),radial-gradient(700px 500px at 95% 10%,var(--glow2),transparent 70%),radial-gradient(600px 500px at 60% 100%,var(--glow3),transparent 70%)}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+.layout{display:flex;min-height:100vh}
+/* sidebar */
+.side{width:236px;flex:none;padding:20px 14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh;background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-right:1px solid var(--card-border)}
+.logo{display:flex;align-items:center;gap:10px;padding:6px 10px 18px}
+.logo .mark{width:44px;height:44px;border-radius:13px;overflow:hidden;box-shadow:0 6px 16px rgba(27,34,134,.35);flex:none}.logo .mark svg{width:44px;height:44px;display:block}
+.logo b{display:block;font-size:15px}.logo span{font-size:11px;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:11px;border:0;background:transparent;cursor:pointer;color:var(--text2);text-align:left;width:100%}
+.nav svg{width:18px;height:18px;flex:none}
+.nav:hover{background:var(--surface2);color:var(--text)}
+.nav.on{background:linear-gradient(135deg,rgba(59,108,246,.16),rgba(124,92,246,.12));color:var(--accent);font-weight:600}
+:root[data-theme="dark"] .nav.on{background:linear-gradient(135deg,rgba(45,212,191,.18),rgba(124,92,246,.14))}
+.nav .cnt{margin-left:auto;font-size:11px;background:var(--neutral-bg);color:var(--text2);padding:1px 8px;border-radius:999px}
+.side .sec{font-size:11px;color:var(--muted);padding:14px 12px 4px;letter-spacing:.04em}
+.side .bottom{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+.seg{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:11px;padding:3px;gap:2px}
+.seg button{flex:1;border:0;background:transparent;border-radius:8px;padding:6px 2px;font-size:12px;color:var(--text2);cursor:pointer;white-space:nowrap}
+.seg button.on{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+/* main */
+.main{flex:1;min-width:0;padding:22px 28px 40px}
+.topline{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.topline .greet{flex:1;min-width:200px}
+.greet .hi{color:var(--text2);font-size:13px}
+.greet h1{margin:2px 0 0;font-size:26px;letter-spacing:-.02em}
+.greet h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.greet .sub{color:var(--muted);font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 12px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.pill select{border:0;background:transparent;padding:0;font-weight:600}
+.pill input{border:0;background:transparent;padding:0;min-width:180px;outline:none}
+.pill svg{width:16px;height:16px;color:var(--muted)}
+.btn{border:1px solid var(--border);background:var(--surface);padding:8px 14px;border-radius:11px;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;transition:transform .1s,box-shadow .15s}
+.btn:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-1px)}
+.btn svg{width:15px;height:15px}
+.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff;font-weight:600;box-shadow:0 6px 16px rgba(99,102,241,.3)}
+.btn.sm{padding:4px 9px;font-size:12px;border-radius:8px}
+.btn.ghost{background:transparent}
+.btn.danger{color:var(--crit)}
+select,input[type=text],input[type=number],input[type=date],input[type=search],textarea{border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:8px 10px;min-width:0}
+input[type=number]{text-align:right}
+input[readonly]{background:var(--surface2)}
+.grid{display:grid;gap:16px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:16px}
+.card{background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--card-border);border-radius:18px;padding:18px 20px;box-shadow:var(--card-shadow);min-width:0}
+.card .ch{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.card .ch h3{margin:0;font-size:15px;flex:1}
+.card .ch .ic{width:30px;height:30px;border-radius:9px;background:var(--tile1);display:grid;place-items:center;color:var(--accent)}
+.card .ch .ic svg{width:16px;height:16px}
+.kpi{display:flex;flex-direction:column;gap:8px}
+.kpi.link{cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative}
+.kpi.link:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(50,50,140,.16)}
+.kpi.link::after{content:"→";position:absolute;right:16px;top:14px;color:var(--muted);opacity:0;transition:opacity .15s}
+.kpi.link:hover::after{opacity:1}
+.kpi .tile{width:42px;height:42px;border-radius:13px;display:grid;place-items:center}
+.kpi .tile svg{width:20px;height:20px}
+.kpi .l{color:var(--text2);font-size:13px}
+.kpi .v{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15}
+.kpi .d{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.delta{display:inline-flex;align-items:center;gap:2px;padding:1px 7px;border-radius:999px;font-weight:600;font-size:12px}
+.delta.up{background:var(--good-bg);color:var(--good)}.delta.down{background:var(--crit-bg);color:var(--crit)}.delta.flat{background:var(--neutral-bg);color:var(--neutral)}
+.row2{grid-template-columns:3fr 2fr}.row3{grid-template-columns:1fr 1fr 1fr}.row21{grid-template-columns:2fr 1fr}
+@media (max-width:1000px){.row2,.row3,.row21{grid-template-columns:1fr}}
+table{width:100%;border-collapse:separate;border-spacing:0;font-variant-numeric:tabular-nums}
+th,td{padding:9px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:12px;white-space:nowrap;background:var(--surface2);position:sticky;top:0;z-index:1}
+th:first-child{border-radius:10px 0 0 10px}th:last-child{border-radius:0 10px 10px 0}
+td.num,th.num{text-align:right;white-space:nowrap}
+tr.click{cursor:pointer}tr.click:hover td{background:var(--surface2)}
+tbody tr:last-child td{border-bottom:0}
+tfoot td{font-weight:700;border-top:1px solid var(--border);border-bottom:0;background:var(--surface2)}
+tfoot tr:first-child td:first-child{border-radius:10px 0 0 0}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap;background:var(--neutral-bg);color:var(--neutral)}
+.badge i{width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block}
+.badge.editable{cursor:pointer;padding-right:7px}.badge.editable em{font-style:normal;font-size:10px;opacity:.6;margin-left:1px}
+.badge.editable:hover{box-shadow:0 0 0 2px var(--border);filter:brightness(1.05)}
+.pop{position:fixed;z-index:60;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 16px 40px rgba(0,0,0,.28);padding:8px;min-width:220px;display:flex;flex-direction:column;gap:3px}
+.pop .pop-t{font-size:11px;color:var(--muted);padding:2px 6px 4px}
+.pop .pop-i{border:0;background:transparent;text-align:left;padding:5px 6px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:8px}
+.pop .pop-i:hover{background:var(--surface2)}.pop .pop-i.on{background:var(--surface2);outline:1px solid var(--border)}
+.pop .pop-i .chk{margin-left:auto;font-size:12px;color:var(--accent)}
+.pop .pop-c{display:flex;gap:6px;border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
+.pop .pop-c input{flex:1;min-width:0;padding:6px 8px}
+:root[data-theme="glass"] .pop{background:rgba(255,255,255,.88);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}
+:root[data-theme="glass-dark"] .pop{background:rgba(22,17,56,.92);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}
+:root[data-theme$="dark"] .badge{filter:brightness(1.45) saturate(1.05)}
+.pop-row{display:flex;align-items:center;gap:4px}.pop-row .pop-i{flex:1}
+.pop-color{border:0;background:transparent;cursor:pointer;padding:4px;border-radius:8px;display:grid;place-items:center}.pop-color:hover{background:var(--surface2)}
+.pop-color i{width:14px;height:14px;border-radius:50%;display:block;box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--border)}
+.swatches{display:flex;flex-wrap:wrap;gap:6px;padding:4px 6px 8px 34px}
+.swatches button{width:20px;height:20px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
+.swatches button.on{border-color:var(--text)}
+.swatches label{width:20px;height:20px;border-radius:50%;border:1px dashed var(--muted);display:grid;place-items:center;font-size:12px;color:var(--muted);cursor:pointer;overflow:hidden;position:relative}
+.swatches label input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.neg{color:var(--crit)}.pos{color:var(--good)}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.tablewrap{overflow:auto;max-height:72vh;border-radius:14px}
+.tablewrap table.list{table-layout:fixed}
+table.list td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.list th{position:sticky;overflow:visible}
+.rs{position:absolute;right:-4px;top:0;bottom:0;width:8px;cursor:col-resize;z-index:3}
+.rs::after{content:"";position:absolute;left:3px;top:6px;bottom:6px;width:2px;border-radius:1px;background:transparent;transition:background .15s}
+.rs:hover::after,.rs.on::after{background:var(--accent)}
+body.resizing{cursor:col-resize;user-select:none}
+.muted{color:var(--muted)}.small{font-size:12px}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{fill:var(--muted);font-size:11px}
+.chart .grid line{stroke:var(--border)}
+.chart .bar{cursor:pointer;transition:opacity .15s}.chart .bar:hover{opacity:.75}
+.chart .xh{stroke:var(--accent);stroke-dasharray:3 3;opacity:0}
+.tooltip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--border);box-shadow:0 8px 24px rgba(0,0,0,.18);padding:8px 12px;border-radius:10px;font-size:12px;z-index:50;display:none;white-space:nowrap;line-height:1.5}
+.tooltip b{display:block;font-size:13px}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--text2);flex-wrap:wrap}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-1px}
+.donut-wrap{display:flex;align-items:center;gap:18px}
+.donut-wrap svg{width:170px;height:170px;flex:none}
+.status-card{display:flex;flex-direction:column}
+.status-card .collect{margin-top:auto;border-top:1px solid var(--border);padding-top:4px}
+.stack{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--neutral-bg);gap:2px}
+.stack i{display:block;height:100%}
+.mini3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}
+.mini3 div{background:var(--surface2);border-radius:10px;padding:8px 10px}
+.mini3 span{display:block;font-size:11px;color:var(--muted)}.mini3 b{font-size:13px;font-variant-numeric:tabular-nums}
+.donut-list{flex:1;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.donut-list .r{display:flex;align-items:center;gap:8px;cursor:pointer;padding:3px 6px;border-radius:8px}
+.donut-list .r:hover{background:var(--surface2)}
+.donut-list .r i{width:10px;height:10px;border-radius:50%;flex:none}
+.donut-list .r .n{flex:1}.donut-list .r .p{color:var(--muted);font-size:12px}
+.hbar{display:flex;flex-direction:column;gap:10px}
+.hbar .r{display:grid;grid-template-columns:1fr 2fr auto;gap:10px;align-items:center;font-size:13px}
+.hbar .t{height:8px;background:var(--neutral-bg);border-radius:4px;overflow:hidden}
+.hbar .t i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--s1),var(--s2))}
+.hbar .p{font-size:12px;color:var(--text2);min-width:88px;text-align:right}
+.bar-h{height:8px;background:var(--neutral-bg);border-radius:4px;overflow:hidden}
+.bar-h i{display:block;height:100%;background:linear-gradient(90deg,var(--s1),var(--s2));border-radius:4px}
+.bar-h i.over{background:var(--crit)}
+.modal-bg{position:fixed;inset:0;background:rgba(5,10,30,.45);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:40;padding:16px}
+.modal-bg.on{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px;width:min(580px,100%);max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal h2{margin:0 0 14px;font-size:17px}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--text2)}
+.form label.full{grid-column:1/-1}
+.form input,.form select,.form textarea{width:100%}
+.modal .actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.sub-tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px;margin:16px 0;width:max-content;max-width:100%;overflow:auto}
+.sub-tabs button{border:0;background:none;padding:7px 14px;cursor:pointer;color:var(--text2);border-radius:9px;white-space:nowrap}
+.sub-tabs button.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:600}
+.head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.head h2{margin:0;font-size:22px;letter-spacing:-.01em}
+.meta{color:var(--text2);font-size:13px;margin-top:4px}
+.grp td{background:var(--surface2);font-weight:600;color:var(--text2)}
+.empty{color:var(--muted);padding:28px;text-align:center}
+.status-msg{font-size:12px;color:var(--muted)}
+.list-row{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.list-row:last-child{border-bottom:0}
+.list-row .av{width:36px;height:36px;border-radius:11px;background:var(--tile1);display:grid;place-items:center;color:var(--accent);font-weight:700;font-size:13px;flex:none}
+.list-row .t{flex:1;min-width:0}.list-row .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.list-row .t span{font-size:12px;color:var(--muted)}
+.list-row .amt{font-weight:700;white-space:nowrap}
+@media (max-width:820px){.layout{flex-direction:column}.side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--card-border);padding:10px}.side .sec,.logo span{display:none}.nav{width:auto;padding:8px 10px}.side .bottom{margin-top:0;flex-direction:row;margin-left:auto}.main{padding:16px}}
+@media (max-width:600px){
+  .main{padding:12px 12px 90px}
+  .kpis{grid-template-columns:1fr 1fr;gap:10px}
+  .card{padding:14px;border-radius:16px}
+  .kpi .v{font-size:19px}
+  .topline{gap:8px}.greet h1{font-size:20px}.greet .sub{display:none}
+  .side{padding:8px 10px;gap:4px;position:sticky;top:0;z-index:30}
+  .side .logo{padding:2px 4px 2px 0}.side .logo b{font-size:13px}
+  .side .nav{padding:7px 9px;font-size:13px}.side .nav svg{width:16px;height:16px}
+  .side .sec,.side .bottom .status-msg{display:none}
+  .side #btnExport,.side #btnImport,.side #btnCsv,.side #btnReveal{font-size:0;gap:0;padding:7px 8px}.side #btnExport svg,.side #btnImport svg,.side #btnCsv svg,.side #btnReveal svg{width:18px;height:18px}
+  .side .bottom{width:auto;flex:1;margin-left:0;gap:4px;flex-direction:row}.side .bottom .seg{flex:1}.side .seg button{padding:4px 2px;font-size:11px}
+  .toolbar .small.muted,.toolbar .spacer{display:none}
+  .card{overflow-x:auto}.card table{min-width:560px}
+  .donut-wrap{flex-direction:column;align-items:stretch}
+  .sub-tabs{width:100%}.sub-tabs button{padding:7px 10px;font-size:13px}
+  .head h2{font-size:18px}
+  .modal{padding:16px;border-radius:14px}.form{grid-template-columns:1fr}
+  .tooltip{display:none!important}
+}
+@media print{.side,.toolbar,.btn,.sub-tabs,.no-print{display:none!important}.main{padding:0}.card{box-shadow:none;break-inside:avoid;background:#fff}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="side">
+  <div class="logo"><div class="mark"><svg viewBox="0 0 640 640"><defs><linearGradient id="lgm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3341c9"/><stop offset=".55" stop-color="#1b2286"/><stop offset="1" stop-color="#0f1560"/></linearGradient></defs><rect width="640" height="640" rx="150" fill="url(#lgm)"/><g fill="#fff"><polygon points="122,123 178,123 178,467 122,519"/><rect x="293" y="237" width="56" height="230"/><polygon points="519,123 463,123 463,467 519,519"/></g></svg></div><div><b>위고디자인</b><span>프로젝트 관리</span></div></div>
+  <div class="sec">메뉴</div>
+  <button class="nav" data-nav="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg>대시보드</button>
+  <button class="nav" data-nav="list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>프로젝트 목록<span class="cnt" id="cntAll"></span></button>
+  <button class="nav" data-nav="unpaid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>미수금<span class="cnt" id="cntUnpaid"></span></button>
+  <button class="nav" data-nav="detail" id="navDetail" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>프로젝트 상세</button>
+  <div class="sec">데이터</div>
+  <button class="nav" id="btnExport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>백업 저장 (JSON)</button>
+  <button class="nav" id="btnImport"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>불러오기</button>
+  <button class="nav" id="btnCsv"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>CSV 내보내기</button>
+  <button class="nav" id="btnCloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.3A6 6 0 0 0 5 11.5 4 4 0 0 0 6 19h12a4.5 4.5 0 0 0 0-9z"/></svg>클라우드 동기화<span class="cnt" id="cloudDot"></span></button>
+  <button class="nav" id="btnReveal" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>데이터 파일 위치 열기</button>
+  <input type="file" id="fileIn" accept="application/json" style="display:none">
+  <div class="bottom">
+    <div class="status-msg" id="saveMsg" style="padding:0 10px"></div>
+    <div class="status-msg" id="syncMsg" style="padding:0 10px;cursor:pointer" title="클라우드 동기화 설정 열기"></div>
+    <div class="sec" style="padding-top:6px">테마</div>
+    <div class="seg" id="styleSeg"><button data-s="flat">기본</button><button data-s="glass">◈ 글라스</button></div>
+    <div class="seg" id="modeSeg" style="margin-top:6px"><button data-m="light">☀ 라이트</button><button data-m="dark">☾ 다크</button></div>
+  </div>
+</aside>
+<main class="main" id="app"></main>
+</div>
+<div class="tooltip" id="tip"></div>
+<div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
+<script>
+const SEED = {"projects":[{"id":1,"year":2020,"month":11,"day":8,"name":"경주 보고서","amount":7000000,"vat":700000,"status":"입금완료","client":"","note":"13855800","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":2,"year":2021,"month":2,"day":16,"name":"뉴스킨 카드뉴스","amount":2845000,"vat":284500,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":3,"year":2021,"month":3,"day":15,"name":"뉴스킨 카드뉴스","amount":1530000,"vat":153000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":4,"year":2021,"month":4,"day":14,"name":"뉴스킨 카드뉴스","amount":400000,"vat":40000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":5,"year":2021,"month":5,"day":17,"name":"뉴스킨 카드뉴스","amount":675000,"vat":67500,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":6,"year":2021,"month":6,"day":14,"name":"뉴스킨 카드뉴스","amount":1134750,"vat":113475,"status":"입금완료","client":"","note":"20300000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":7,"year":2021,"month":7,"day":14,"name":"뉴스킨 카드뉴스","amount":1139000,"vat":113900,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":8,"year":2021,"month":7,"day":15,"name":"뉴스킨지속가능보고서","amount":900000,"vat":90000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":9,"year":2021,"month":9,"day":14,"name":"뉴스킨 카드뉴스","amount":964750,"vat":96475,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":10,"year":2021,"month":10,"day":18,"name":"뉴스킨 카드뉴스","amount":905000,"vat":90500,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":11,"year":2021,"month":11,"day":8,"name":"삼양화학 입찰 시안(드랍)","amount":200000,"vat":20000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":12,"year":2021,"month":11,"day":15,"name":"뉴스킨 카드뉴스","amount":1800000,"vat":180000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":13,"year":2021,"month":12,"day":16,"name":"한국 수자원 사사입찰","amount":800000,"vat":80000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":14,"year":2021,"month":12,"day":31,"name":"수성구의회 30년","amount":4000000,"vat":400000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":15,"year":2021,"month":12,"day":31,"name":"한국정보통신공사협회 50년사","amount":4500000,"vat":450000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":16,"year":2021,"month":12,"day":31,"name":"한국폴리텍 1권","amount":2500000,"vat":250000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":17,"year":2022,"month":1,"day":14,"name":"뉴스킨 카드뉴스","amount":850000,"vat":85000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":18,"year":2022,"month":1,"day":15,"name":"여주도자기축제 30년","amount":2500000,"vat":250000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":19,"year":2022,"month":2,"day":14,"name":"뉴스킨 카드뉴스","amount":712300,"vat":71230,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":20,"year":2022,"month":2,"day":15,"name":"광주 보건대 입찰 시안","amount":800000,"vat":80000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":21,"year":2022,"month":3,"day":1,"name":"광주 보건대 50년사","amount":5000000,"vat":500000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":22,"year":2022,"month":3,"day":15,"name":"뉴스킨 카드뉴스","amount":390000,"vat":39000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":23,"year":2022,"month":4,"day":26,"name":"롯데리츠 AR","amount":3000000,"vat":300000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":24,"year":2022,"month":4,"day":26,"name":"교보증권 지속가능보고서","amount":4000000,"vat":400000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":25,"year":2022,"month":5,"day":1,"name":"동일건축 40년사","amount":5000000,"vat":500000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":26,"year":2022,"month":8,"day":1,"name":"강남구 30년사","amount":5500000,"vat":550000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":27,"year":2022,"month":10,"day":25,"name":"정보통신공사업 현황 및 관련제도 안내 책자 폴더","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":28,"year":2022,"month":11,"day":9,"name":"정보통신 회원가입 브로슈어","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":29,"year":2022,"month":11,"day":10,"name":"산림과학원","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":30,"year":2022,"month":11,"day":10,"name":"2023 국회보 시안","amount":700000,"vat":70000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":31,"year":2022,"month":11,"day":10,"name":"근로복지공단 업무 매뉴얼","amount":800000,"vat":80000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":32,"year":2022,"month":11,"day":15,"name":"서울관광재단 MICE리플렛","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":33,"year":2022,"month":11,"day":21,"name":"한국환경기술원 가이드라인 및 매뉴얼","amount":3000000,"vat":300000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":34,"year":2022,"month":11,"day":23,"name":"(특허상담센터) 부정경쟁행위 및 영업비밀 관련 리플릿","amount":800000,"vat":80000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":35,"year":2022,"month":11,"day":25,"name":"국립생태원 예산 계약 지출 매뉴얼","amount":1200000,"vat":120000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":36,"year":2022,"month":11,"day":25,"name":"대덕문화원 Talking Memories","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":37,"year":2022,"month":11,"day":30,"name":"스마트팜 우수사례집","amount":3000000,"vat":300000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":38,"year":2022,"month":12,"day":1,"name":"MICE 산업동향 보고서","amount":1000000,"vat":100000,"status":"계산서발행","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":39,"year":2022,"month":12,"day":1,"name":"구로구장애인체육회 CI","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":40,"year":2022,"month":12,"day":12,"name":"정보통신 분리발주 브로슈어","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":41,"year":2022,"month":12,"day":12,"name":"법원공무원 교재 표지","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":42,"year":2022,"month":12,"day":12,"name":"국가평생교육진흥원 브로슈어","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":43,"year":2022,"month":12,"day":23,"name":"정보통신 사업실적 성과홍보 브로셔","amount":1200000,"vat":120000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":44,"year":2022,"month":12,"day":26,"name":"HL Klemove 신년사 배너","amount":100000,"vat":10000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":45,"year":2023,"month":1,"day":2,"name":"서울금융복지상담센터 표지","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":46,"year":2023,"month":1,"day":5,"name":"법원공무원교육원 일년사 표지","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"13500000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":47,"year":2023,"month":1,"day":19,"name":"능력개발교육원","amount":800000,"vat":80000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":48,"year":2023,"month":1,"day":19,"name":"디테크타워 건설지","amount":3000000,"vat":300000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":49,"year":2023,"month":1,"day":25,"name":"법원공무원 집행관연찬집","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":50,"year":2023,"month":2,"day":8,"name":"우리미래 지역아동센터프로그램 포스터","amount":400000,"vat":40000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":51,"year":2023,"month":2,"day":8,"name":"우리미래 동행문화유산 포스터","amount":400000,"vat":40000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":52,"year":2023,"month":2,"day":20,"name":"우리미래 지역문화유산교육-학교방문","amount":350000,"vat":35000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":53,"year":2023,"month":2,"day":27,"name":"직장내 인권 보호 홍보물 2종","amount":250000,"vat":25000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":54,"year":2023,"month":3,"day":10,"name":"청소년 건강검진 포스터, 리플렛","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":55,"year":2023,"month":3,"day":10,"name":"우리가만드는미래-지역문화유산교육-현장학습","amount":350000,"vat":35000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":56,"year":2023,"month":3,"day":22,"name":"서울희망교실 길라잡이","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":57,"year":2023,"month":3,"day":23,"name":"북한산림 동향분석 하반기","amount":150000,"vat":15000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":58,"year":2023,"month":4,"day":3,"name":"학술회의총서 11권","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":59,"year":2023,"month":4,"day":13,"name":"한국기술연구원 40년사","amount":3500000,"vat":350000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":60,"year":2023,"month":5,"day":11,"name":"2022년 다문화 학생현황","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":61,"year":2023,"month":5,"day":18,"name":"능력교육개발원","amount":600000,"vat":60000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":62,"year":2023,"month":6,"day":5,"name":"교보증권 영문","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"13500000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":63,"year":2023,"month":6,"day":7,"name":"심팩 영문","amount":250000,"vat":25000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":64,"year":2023,"month":6,"day":13,"name":"건강보험심사평가원","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":65,"year":2023,"month":6,"day":20,"name":"국립산림과학원 연구보고서","amount":1300000,"vat":130000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":66,"year":2023,"month":6,"day":29,"name":"한국고용정보원 VR 직업체험 콘텐츠","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":67,"year":2023,"month":7,"day":27,"name":"문화재 자료집 발간","amount":3636364,"vat":363636,"status":"떼임","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":68,"year":2023,"month":8,"day":7,"name":"한전인재개발원","amount":2500000,"vat":250000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":69,"year":2023,"month":8,"day":9,"name":"소방산업기술원리플렛","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":70,"year":2023,"month":10,"day":5,"name":"태권도진흥재단","amount":3000000,"vat":300000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":71,"year":2023,"month":10,"day":17,"name":"한국형 녹색채권 가이드라인 영문","amount":1200000,"vat":120000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":72,"year":2023,"month":10,"day":27,"name":"경상북도발달장애인지원센터","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":73,"year":2023,"month":10,"day":31,"name":"한국방송통신전파진흥원 탁상달력","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":74,"year":2023,"month":11,"day":2,"name":"지식재산권 보고 가이드북","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":75,"year":2023,"month":11,"day":16,"name":"한국남동발전 달력","amount":1500000,"vat":150000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":76,"year":2023,"month":11,"day":16,"name":"경제인문사회연구회 25주년 백서 소관기관연구사","amount":7000000,"vat":700000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":77,"year":2023,"month":11,"day":23,"name":"S&I_SR_영문","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":78,"year":2023,"month":12,"day":1,"name":"중소벤처기업연구원 보고서 표지","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":79,"year":2023,"month":12,"day":4,"name":"전남테크노파크 브로슈어","amount":1500000,"vat":150000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":80,"year":2023,"month":12,"day":6,"name":"재일한국인투자협회","amount":6000000,"vat":600000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":81,"year":2023,"month":12,"day":7,"name":"한국주택금융공사 브로셔","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":82,"year":2023,"month":12,"day":13,"name":"산림과학속보","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":83,"year":2023,"month":12,"day":13,"name":"수자원공사 영문 보고서","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":84,"year":2023,"month":12,"day":15,"name":"과학원 연구보고서 표지","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":85,"year":2023,"month":12,"day":19,"name":"NIA 사례집","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":86,"year":2023,"month":12,"day":19,"name":"사사별책 매거진 80p","amount":1300000,"vat":130000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":87,"year":2024,"month":1,"day":23,"name":"한국해운협회 70년사","amount":7200000,"vat":720000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":88,"year":2024,"month":3,"day":5,"name":"NH농협금융지주의 현황보고서, 영업보고서","amount":2200000,"vat":220000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":89,"year":2024,"month":3,"day":5,"name":"대한양궁협회 60년사","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":90,"year":2024,"month":3,"day":13,"name":"정보통신 서울시회 홍보브로셔","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":91,"year":2024,"month":4,"day":12,"name":"[라우드]제14회 세계인권도시포럼 공식 포스터 디자인 공모 우승 상금","amount":1445400,"vat":144540,"status":"입금완료","client":"","note":"9700000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":92,"year":2024,"month":4,"day":15,"name":"온라인평생교육원 10주년 행사자료집","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":93,"year":2024,"month":4,"day":19,"name":"연암대학교 50년사","amount":3500000,"vat":350000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":94,"year":2024,"month":4,"day":28,"name":"[라우드]부천원종 표지디자인 우승 상금","amount":341200,"vat":34120,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":95,"year":2024,"month":5,"day":1,"name":"신한라이프  Appendix","amount":200000,"vat":20000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":96,"year":2024,"month":5,"day":9,"name":"[라우드]옐로오션 기타 인쇄물 콘테스트 우승 상금","amount":281050,"vat":28105,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":97,"year":2024,"month":5,"day":13,"name":"NH투자증권 Appendix","amount":200000,"vat":20000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":98,"year":2024,"month":5,"day":16,"name":"[라우드]농업회사법인 진성 유한책임회사 브로셔 콘테스트 우승","amount":803000,"vat":80300,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":99,"year":2024,"month":5,"day":16,"name":"영림원소프트랩 기업 브랜드 지면 광고 상금분배(취소)","amount":82000,"vat":8200,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":100,"year":2024,"month":5,"day":27,"name":"다올투자증권 지속가능보고서","amount":2000000,"vat":200000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":101,"year":2024,"month":5,"day":28,"name":"한국고용정보원 표지","amount":1500000,"vat":150000,"status":"입금완료","client":"","note":"14352650","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":102,"year":2024,"month":6,"day":1,"name":"이수페타시스","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"37420000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":103,"year":2024,"month":6,"day":5,"name":"kcc글라스","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":104,"year":2024,"month":6,"day":20,"name":"경찰학교 315기 교재","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":105,"year":2024,"month":6,"day":24,"name":"치약 패키지","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":106,"year":2024,"month":6,"day":25,"name":"NH투자증권 Appendix 영문","amount":1500000,"vat":150000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":107,"year":2024,"month":7,"day":16,"name":"한전 인재개발원 - 제42회 공공 HRD 콘테스트","amount":400000,"vat":40000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":108,"year":2024,"month":7,"day":22,"name":"국제학술대회 IPBM 2025 포스터/전단지 콘테스트 우승","amount":320000,"vat":32000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":109,"year":2024,"month":7,"day":30,"name":"중소벤처기업연구원 보고서","amount":2000000,"vat":200000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":110,"year":2024,"month":8,"day":19,"name":"적십자 지로&포스터","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":111,"year":2024,"month":8,"day":22,"name":"가상훈련 콘텐츠 안내책자 시안","amount":400000,"vat":40000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":112,"year":2024,"month":8,"day":26,"name":"서울시 미래공간기획부 책자(렛츠노들,나의집)","amount":4200000,"vat":420000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":113,"year":2024,"month":9,"day":5,"name":"서울시 교육감 선거 공보물(파견)","amount":5000000,"vat":500000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":114,"year":2024,"month":9,"day":5,"name":"무술연맹 영문","amount":1300000,"vat":130000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":115,"year":2024,"month":9,"day":8,"name":"적십자 희망진료센터","amount":2000000,"vat":200000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":116,"year":2024,"month":9,"day":27,"name":"정보통신 분리발주","amount":300000,"vat":30000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":117,"year":2024,"month":10,"day":16,"name":"기업은행 ceo report 디자인시안","amount":1500000,"vat":150000,"status":"입금완료","client":"탈락","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":118,"year":2024,"month":10,"day":17,"name":"서울다문화교육지원센터","amount":4000000,"vat":400000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":119,"year":2024,"month":10,"day":18,"name":"제8차 산업기술혁신 계획 표지 2종 시안","amount":400000,"vat":40000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":120,"year":2024,"month":10,"day":23,"name":"한국장애인고용공단 시안","amount":3500000,"vat":350000,"status":"계산서발행","client":"수주","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":121,"year":2024,"month":10,"day":29,"name":"대한민국 평생학습","amount":600000,"vat":60000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":122,"year":2024,"month":11,"day":5,"name":"포스코와이드 30년사","amount":2500000,"vat":250000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":123,"year":2024,"month":11,"day":5,"name":"양궁협회 수정","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":124,"year":2024,"month":11,"day":13,"name":"한국정보통신공사협회 브로셔","amount":600000,"vat":60000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":125,"year":2024,"month":11,"day":14,"name":"지식재산권 가이드북","amount":1000000,"vat":100000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":126,"year":2024,"month":11,"day":26,"name":"KSPO 브로슈어","amount":900000,"vat":90000,"status":"계산서발행","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":127,"year":2024,"month":11,"day":29,"name":"금천구 소식지","amount":500000,"vat":50000,"status":"입금완료","client":"","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":128,"year":2025,"month":1,"day":21,"name":"정보통신공사협회 사업실적 브로슈어","amount":1000000,"vat":100000,"status":"입금완료","client":"진커뮤니케이션","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":129,"year":2025,"month":1,"day":25,"name":"서울스포츠 시안","amount":1700000,"vat":170000,"status":"입금완료","client":"이팝(수주)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":130,"year":2025,"month":2,"day":12,"name":"신흥70년사","amount":5000000,"vat":500000,"status":"입금완료","client":"메타엑스","note":"50%(17일) +50%(12월말) / 275들어옴","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":131,"year":2025,"month":2,"day":12,"name":"국민권익위원회 시안","amount":1750000,"vat":175000,"status":"입금완료","client":"이팝(수주)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":132,"year":2025,"month":2,"day":24,"name":"축산검역본부 시안","amount":300000,"vat":30000,"status":"입금완료","client":"비파","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":133,"year":2025,"month":3,"day":6,"name":"젤라토닌 로고 패키지, 상세페이지","amount":3000000,"vat":300000,"status":"입금완료","client":"스팀미이더","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":134,"year":2025,"month":3,"day":10,"name":"2024년 균형발전지표 동향분석 보고서","amount":5000000,"vat":500000,"status":"입금완료","client":"시하","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":135,"year":2025,"month":3,"day":19,"name":"고용정보원 보고서 표지 작업","amount":1000000,"vat":100000,"status":"입금완료","client":"메타엑스","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":136,"year":2025,"month":3,"day":19,"name":"주간 해외 감염병 발생 동향 하시라 디자인","amount":300000,"vat":30000,"status":"입금완료","client":"비파","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":137,"year":2025,"month":3,"day":19,"name":"2025년 K-헤리티지 총서(줄타기)","amount":39700000,"vat":3970000,"status":"입금완료","client":"위고(입찰 수주)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":138,"year":2025,"month":4,"day":1,"name":"노무법인 봄 로고","amount":2000000,"vat":200000,"status":"입금완료","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":139,"year":2025,"month":4,"day":14,"name":"교회 리플렛","amount":120000,"vat":12000,"status":"입금완료","client":"권병준 본부장 제작비 따로 25만원","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":140,"year":2025,"month":4,"day":18,"name":"한국수목정원관리원 사보(반연간)","amount":39200000,"vat":3920000,"status":"입금완료","client":"위고(입찰 수주)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":141,"year":2025,"month":5,"day":7,"name":"한국수자원공사 사보PT","amount":1800000,"vat":180000,"status":"입금완료","client":"큐라인(강시내)","note":"탈락","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":142,"year":2025,"month":5,"day":7,"name":"에스코어 제안서 디자인","amount":2850000,"vat":285000,"status":"입금완료","client":"에스코어 박민영 프로(희라소개)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":143,"year":2025,"month":5,"day":7,"name":"한국형 녹색분류체계 기반 정보공개 사례 연구","amount":1000000,"vat":100000,"status":"입금완료","client":"시하","note":"500더들어옴","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":144,"year":2025,"month":5,"day":30,"name":"화승 지속자능보고서","amount":1700000,"vat":170000,"status":"입금완료","client":"큐더스","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":145,"year":2025,"month":6,"day":4,"name":"에스코어 제품소개 디자인 PPT","amount":2000000,"vat":200000,"status":"입금완료","client":"에스코어 홍보라 프로","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":146,"year":2025,"month":6,"day":9,"name":"한미글로벌 사사 시안","amount":1800000,"vat":180000,"status":"입금완료","client":"비컴(조은선)-수주","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":147,"year":2025,"month":7,"day":9,"name":"에스코어 기술백서","amount":2000000,"vat":200000,"status":"입금완료","client":"에스코어 홍보라 프로","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":148,"year":2025,"month":7,"day":11,"name":"2025년 공공HRD콘테스트","amount":1000000,"vat":100000,"status":"입금완료","client":"안철환(인쇄협회)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":149,"year":2025,"month":7,"day":16,"name":"2025년 치매상담사례집","amount":21590909,"vat":2159091,"status":"입금완료","client":"위고(입찰 수주)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":150,"year":2025,"month":8,"day":11,"name":"산업연구원 시안","amount":500000,"vat":50000,"status":"입금완료","client":"비컴(조은선)-수주","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":151,"year":2025,"month":8,"day":14,"name":"개인형 이동장치 안천수칙 카드뉴스","amount":100000,"vat":10000,"status":"입금완료","client":"메타엑스","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":152,"year":2025,"month":8,"day":25,"name":"방행자 회고록","amount":1000000,"vat":100000,"status":"입금완료","client":"메타엑스","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":153,"year":2025,"month":9,"day":3,"name":"News Brief 시안","amount":500000,"vat":50000,"status":"입금완료","client":"오태곤 이사","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":154,"year":2025,"month":9,"day":10,"name":"IFWY_VIP브로셔","amount":500000,"vat":50000,"status":"입금완료","client":"시하","note":"500더들어옴","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":155,"year":2025,"month":9,"day":16,"name":"2026 국립민속박물관 달력","amount":31090909,"vat":3109091,"status":"입금완료","client":"위고(입찰 수주)","note":"7090909","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":156,"year":2025,"month":9,"day":18,"name":"사랑의열매 착한일터 결과보고서","amount":10909091,"vat":1090909,"status":"입금완료","client":"홈페이지 컨텍","note":"6409091 / 조은선 350 / 인쇄 100","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":157,"year":2025,"month":10,"day":21,"name":"남서울교회 음악회 +CJ 커뮤니케이션 가이드","amount":1500000,"vat":150000,"status":"입금완료","client":"권병준 본부장 제작비 따로 50만원(CJ는 별도건50)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":158,"year":2025,"month":10,"day":21,"name":"K Opensource X_2025 부스 포스터 디자인","amount":300000,"vat":30000,"status":"입금완료","client":"에스코어 홍보라 프로","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":159,"year":2025,"month":10,"day":22,"name":"한국벤처투자 표지 3종","amount":500000,"vat":50000,"status":"입금완료","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":160,"year":2025,"month":11,"day":4,"name":"렛츠노들 매거진&브로슈어","amount":8181818,"vat":818182,"status":"입금완료","client":"권라희(아키클래스) 나한테 250정도 남음","note":"1500000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":161,"year":2025,"month":11,"day":13,"name":"빌드엠파트너스 회사 소계서+명패","amount":650000,"vat":65000,"status":"입금완료","client":"권부장","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":162,"year":2025,"month":11,"day":14,"name":"한국 세무사협회 포스터","amount":500000,"vat":50000,"status":"진행중","client":"주병선 이사","note":"지랄맞은 드랍","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":163,"year":2025,"month":11,"day":14,"name":"반부패청렴 가이드북","amount":1000000,"vat":100000,"status":"입금완료","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":164,"year":2025,"month":11,"day":26,"name":"교회 포스터","amount":60000,"vat":0,"status":"입금완료","client":"권부장","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":165,"year":2025,"month":11,"day":26,"name":"한국보건사업진흥원","amount":1200000,"vat":120000,"status":"입금완료","client":"오태곤 이사(20p늘어나서 150까지 가능?)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":166,"year":2025,"month":11,"day":28,"name":"(한국정보통신공사협회) 분리발주","amount":300000,"vat":30000,"status":"입금완료","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":167,"year":2025,"month":7,"day":11,"name":"한미글로벌 PM브로슈어","amount":500000,"vat":50000,"status":"진행중","client":"권병준 본부장","note":"떼인 150만원 / 이놈이랑은 절대 하지 말자","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":168,"year":2025,"month":10,"day":17,"name":"K-water 성공백서","amount":4500000,"vat":450000,"status":"입금완료","client":"시하","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":169,"year":2025,"month":11,"day":5,"name":"전쟁기념관 백서","amount":3000000,"vat":300000,"status":"입금완료","client":"시하","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":170,"year":2025,"month":11,"day":14,"name":"교직원공제회 AR 영문","amount":800000,"vat":80000,"status":"입금완료","client":"큐더스","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":171,"year":2025,"month":12,"day":1,"name":"보건신기술(NET) 인증 사무편람","amount":1500000,"vat":150000,"status":"계산서발행","client":"오태곤 이사","note":"30만원 덜입금","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":172,"year":2025,"month":12,"day":1,"name":"IITP 2026년도 주간기술동향지","amount":71272727,"vat":7127273,"status":"선금","client":"위고(입찰 수주)","note":"54879999.79 / 선금 70% 신청 / 23519999.910000004 / 남음","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":173,"year":2025,"month":12,"day":9,"name":"접견보고서 모음집","amount":2750000,"vat":275000,"status":"입금완료","client":"시하","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":174,"year":2025,"month":12,"day":17,"name":"한미글로벌 30년사","amount":7500000,"vat":750000,"status":"입금완료","client":"비컴(조은선)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":175,"year":2025,"month":12,"day":17,"name":"산업연구원 50년사","amount":6000000,"vat":600000,"status":"입금완료","client":"비컴(조은선)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":176,"year":2026,"month":1,"day":9,"name":"에스코어 리플렛","amount":1230000,"vat":123000,"status":"진행중","client":"에스코어(박민영프로)","note":"제작비 37만원 / 860000","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":177,"year":2026,"month":1,"day":16,"name":"한국보건산업진흥원 브로슈어","amount":1500000,"vat":150000,"status":"진행중","client":"오태곤 이사","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":178,"year":2026,"month":1,"day":20,"name":"한국보건산업진흥원 어플리케이션","amount":1500000,"vat":150000,"status":"진행중","client":"오태곤 이사","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":179,"year":2026,"month":1,"day":21,"name":"한국정보통신공사협회 정기총회 배너","amount":100000,"vat":10000,"status":"입금완료","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":180,"year":2026,"month":2,"day":4,"name":"피크만에스피 PPT","amount":60000,"vat":6000,"status":"입금완료","client":"홈페이지 컨텍","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":181,"year":2026,"month":2,"day":9,"name":"산업연구원 카드뉴스5종, 3단 리플렛","amount":500000,"vat":50000,"status":"입금완료","client":"비컴(조은선)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":182,"year":2026,"month":3,"day":4,"name":"국민권익위원회 시안","amount":1750000,"vat":175000,"status":"계산서발행","client":"이팝","note":"기획 175만원 / 10월 중순 / 4895000 / 198만원 남음","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":183,"year":2026,"month":3,"day":20,"name":"현대해상 PPT 및 보고서 디자인","amount":2700000,"vat":270000,"status":"계산서발행","client":"이팝","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":184,"year":2026,"month":3,"day":26,"name":"2025년 K-헤리티지 총서(한지)","amount":37500000,"vat":3750000,"status":"입금완료","client":"위고(입찰 수주)","note":"선금 50% / 20625000 / 조은선 550","estimate":{"title":"한지총서 산출내역서","date":"2025-05-01","spec":"163mm * 200mm / 무선제본 / 200면 / 국문300 영문900 =1,200부","overheadRate":3,"profitRate":3,"items":[{"group":"기획 및 디자인","name":"기획료","qty":1,"unit":"건","unitPrice":1500000,"note":""},{"group":"기획 및 디자인","name":"진행료","qty":1,"unit":"건","unitPrice":500000,"note":""},{"group":"기획 및 디자인","name":"취재 및 원고","qty":5,"unit":"건","unitPrice":300000,"note":""},{"group":"기획 및 디자인","name":"원고","qty":200,"unit":"면","unitPrice":10000,"note":""},{"group":"기획 및 디자인","name":"표지 디자인","qty":1,"unit":"건","unitPrice":1000000,"note":""},{"group":"기획 및 디자인","name":"내지 디자인","qty":200,"unit":"면","unitPrice":20000,"note":""},{"group":"기획 및 디자인","name":"컬러 교정 및 가제본","qty":2,"unit":"회","unitPrice":150000,"note":""},{"group":"기획 및 디자인","name":"영문번역","qty":1,"unit":"식","unitPrice":5000000,"note":""},{"group":"기획 및 디자인","name":"홍보비","qty":1,"unit":"식","unitPrice":600000,"note":""},{"group":"사진촬영 및 이미지","name":"일반촬영","qty":4,"unit":"회","unitPrice":500000,"note":""},{"group":"사진촬영 및 이미지","name":"영상촬영","qty":2,"unit":"건","unitPrice":0,"note":""},{"group":"인쇄 및 제작","name":"표지 아르떼 240g","qty":1.5,"unit":"연","unitPrice":470000,"note":""},{"group":"인쇄 및 제작","name":"내지 아르떼 105g","qty":22,"unit":"연","unitPrice":200000,"note":""},{"group":"인쇄 및 제작","name":"표지 CTP 출력","qty":16,"unit":"판","unitPrice":12000,"note":""},{"group":"인쇄 및 제작","name":"내지 CTP 출력","qty":208,"unit":"판","unitPrice":12000,"note":""},{"group":"인쇄 및 제작","name":"표지 옵셋 인쇄","qty":16,"unit":"(연*도수)","unitPrice":12000,"note":""},{"group":"인쇄 및 제작","name":"내지 옵셋 인쇄","qty":240,"unit":"(연*도수)","unitPrice":12000,"note":""},{"group":"인쇄 및 제작","name":"에폭시","qty":1200,"unit":"부","unitPrice":500,"note":""},{"group":"인쇄 및 제작","name":"무선제본","qty":1200,"unit":"부","unitPrice":500,"note":""},{"group":"인쇄 및 제작","name":"봉투제작","qty":1200,"unit":"부","unitPrice":500,"note":""},{"group":"배송","name":"국내 배송","qty":300,"unit":"부","unitPrice":1500,"note":""},{"group":"배송","name":"해외 배송","qty":900,"unit":"부","unitPrice":4500,"note":""}]},"budget":[{"category":"국문원고","planned":8000000,"note":""},{"category":"자문료","planned":1000000,"note":""},{"category":"영문번역","planned":3300000,"note":""},{"category":"기획진행","planned":5500000,"note":""},{"category":"사진 영상","planned":2000000,"note":"150+경비"},{"category":"사례비","planned":500000,"note":""},{"category":"인쇄","planned":9500000,"note":"종이 150"},{"category":"배송","planned":4000000,"note":""}],"expenses":[{"date":"2026-05-20","item":"PM선금","category":"","unitPrice":2750000,"amount":3025000,"note":"선금 50%"},{"date":"2026-06-26","item":"이승철 작가님 선금","category":"","unitPrice":2000000,"amount":1934000,"note":"원청징수 3.3%"},{"date":"2026-08-05","item":"전철 교수 감수비","category":"","unitPrice":1000000,"amount":967000,"note":"원청징수 3.3%"},{"date":"2026-08-05","item":"손초원작가 출장비","category":"","unitPrice":80000,"amount":80000,"note":"주유 실비"},{"date":"2026-08-05","item":"김삼식 감수비","category":"","unitPrice":200000,"amount":193400,"note":"원청징수 3.3%"},{"date":"2026-08-19","item":"서주희 작가님 집필료","category":"","unitPrice":1000000,"amount":967000,"note":"원청징수 3.3%"},{"date":"2026-08-28","item":"영문 번역 선금","category":"","unitPrice":1480000,"amount":1628000,"note":"선금 50%"},{"date":"2026-09-03","item":"안치용 인터뷰 사례비","category":"","unitPrice":200000,"amount":193400,"note":"원청징수 3.3%"},{"date":"2026-09-08","item":"인미애 작가님","category":"","unitPrice":3000000,"amount":2901000,"note":"원청징수 3.3%"}],"payments":[{"date":"2026-03-26","amount":20625000,"note":"선금 50%"}]},{"id":185,"year":2026,"month":4,"day":1,"name":"선거","amount":20000000,"vat":2000000,"status":"진행중","client":"문성환 본부장님(나)","note":"1,000만 선금","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":186,"year":2026,"month":4,"day":10,"name":"고용정보원 보고서 표지 작업","amount":1000000,"vat":100000,"status":"계산서발행","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":187,"year":2026,"month":4,"day":10,"name":"한식진흥원 전통주 총서","amount":136500000,"vat":13650000,"status":"선금","client":"위고(입찰 수주)","note":"선금 70%(105,105,000) / 조은선 월 150","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":188,"year":2026,"month":4,"day":17,"name":"보라알바","amount":-5000000,"vat":-500000,"status":"진행중","client":"문성환 본부장님(보라)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":189,"year":2026,"month":4,"day":22,"name":"6월 2일까지 임대료","amount":636364,"vat":63636,"status":"입금완료","client":"문성환 본부장님(나)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":190,"year":2026,"month":5,"day":19,"name":"한국수목원정원관리원 사보","amount":39200000,"vat":3920000,"status":"선금","client":"위고(입찰 수주)","note":"조은선 회당 450 / 70% 신청 / 12,936,000원 남음","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":191,"year":2026,"month":5,"day":19,"name":"다이퀘스트 리플렛4종","amount":2650000,"vat":265000,"status":"입금완료","client":"희라 컨텍","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":192,"year":2026,"month":5,"day":21,"name":"동일건축 지명원","amount":2000000,"vat":200000,"status":"진행중","client":"비컴","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":193,"year":2026,"month":7,"day":2,"name":"2026년 공공HRD콘테스트","amount":1000000,"vat":100000,"status":"입금완료","client":"안대표","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":194,"year":2026,"month":8,"day":10,"name":"에스코어 리플렛 Open Source SW","amount":2000000,"vat":200000,"status":"입금완료","client":"에스코어(박민영프로)","note":"제작비 60만원","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":195,"year":2026,"month":8,"day":18,"name":"다이퀘스트 리플렛 추가 인쇄","amount":1700000,"vat":170000,"status":"입금완료","client":"다이퀘스트(심아영책임)","note":"제작비 70만원","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":196,"year":2026,"month":8,"day":20,"name":"에스코어 EDB 행사 부스월 디자인","amount":200000,"vat":20000,"status":"입금완료","client":"에스코어(박민영프로)","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":197,"year":2026,"month":9,"day":9,"name":"다이퀘스트 리플렛 추가 인쇄","amount":950000,"vat":95000,"status":"입금완료","client":"다이퀘스트(심아영책임)","note":"제작비 28만원","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":198,"year":2026,"month":9,"day":10,"name":"다이퀘스트 리플렛 추가 인쇄","amount":950000,"vat":95000,"status":"입금완료","client":"다이퀘스트(심아영책임)","note":"제작비 28만원","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":199,"year":2026,"month":9,"day":17,"name":"한국소비자원 포스터","amount":1400000,"vat":140000,"status":"입금완료","client":"다이렉트 연락","note":"제작비 35만원","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":200,"year":2026,"month":10,"day":12,"name":"대한건설협회 브로슈어","amount":1000000,"vat":100000,"status":"진행중","client":"비컴","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":201,"year":2026,"month":10,"day":16,"name":"사랑의열매 기업나눔, 착한기업 보고서","amount":20000000,"vat":2000000,"status":"진행중","client":"직접 연락","note":"조은선 600","estimate":null,"budget":[],"expenses":[],"payments":[]},{"id":202,"year":2026,"month":10,"day":26,"name":"보건산업진흥원 프로그램가이드북-독일어","amount":500000,"vat":50000,"status":"입금완료","client":"오태곤 이사","note":"","estimate":null,"budget":[],"expenses":[],"payments":[]}],"nextId":203};
+const KEY = 'wego-pm-v1';
+const STATUSES = ['진행중','계산서발행','선금','입금완료','지급'];
+const DEFAULT_COLORS = {진행중:'#6b7280',계산서발행:'#d97706',선금:'#2563eb',입금완료:'#16a34a',지급:'#dc2626',떼임:'#dc2626'};
+const PALETTE = ['#6b7280','#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#db2777','#0891b2','#ea580c','#0d9488'];
+const statusColor = s => (state.statusColors||{})[s] || DEFAULT_COLORS[s] || '#6b7280';
+const hexA = (h,a) => { const n=parseInt(h.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; };
+const ICONS = {
+ money:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>',
+ check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>',
+ alert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>',
+ folder:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+ receipt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 2v20l3-2 3 2 3-2 3 2 3-2 3 2V2l-3 2-3-2-3 2-3-2-3 2z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+ chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l4-5 4 3 5-7"/></svg>',
+ pie:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83M22 12A10 10 0 0 0 12 2v10z"/></svg>',
+ users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/><circle cx="9" cy="7" r="4"/></svg>',
+ clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>',
+ plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>',
+ search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',
+ cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+ moon:'<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+ print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
+ back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>',
+ edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>',
+};
+const NATIVE = !!(window.__NATIVE__ && window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.native);
+const nativePost = m => { try{ window.webkit.messageHandlers.native.postMessage(m); }catch(e){} };
+let state = load();
+let pref = loadPref();
+function loadPref(){ if(NATIVE) return Object.assign({}, window.__NATIVE_PREF__||{}); try{ return JSON.parse(localStorage.getItem(KEY+'-pref')||'{}')||{}; }catch(e){ return {}; } }
+function savePref(){ if(NATIVE) nativePost({type:'pref', data: JSON.stringify(pref)}); else { try{ localStorage.setItem(KEY+'-pref', JSON.stringify(pref)); }catch(e){} } }
+let ui = {tab:'dash', year: String(new Date().getFullYear()), q:'', status:'', mode:'', sort:{key:'date',dir:-1}, detailId:null, dtab:'summary', expSort:'date-desc', expGroup:false};
+
+function load(){
+  if(NATIVE){ const d = window.__NATIVE_DATA__; if(d && Array.isArray(d.projects)) return d; return JSON.parse(JSON.stringify(SEED)); }
+  try{ const s = localStorage.getItem(KEY); if(s){ const d = JSON.parse(s); if(d && Array.isArray(d.projects)) return d; } }catch(e){}
+  return JSON.parse(JSON.stringify(SEED));
+}
+function persistLocal(){
+  const tm = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  if(NATIVE){ nativePost({type:'save', data: JSON.stringify(state)}); document.getElementById('saveMsg').textContent = '파일에 저장됨 ' + tm; return true; }
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); document.getElementById('saveMsg').textContent = '자동 저장됨 ' + tm; return true; }
+  catch(e){ document.getElementById('saveMsg').textContent = '⚠ 저장 실패: 백업 저장을 이용하세요'; return false; }
+}
+function save(){
+  state.savedAt = new Date().toISOString();
+  persistLocal();
+  if(sync.session){ sync.dirty=true; schedulePush(); }
+}
+const $ = s => document.querySelector(s);
+const esc = s => String(s??'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const won = n => (Math.round(n||0)).toLocaleString('ko-KR');
+const wonS = n => { const v = Math.round(n||0); return (v<0?'-':'') + Math.abs(v).toLocaleString('ko-KR'); };
+const manwon = n => { const v=Math.round((n||0)/10000); return v.toLocaleString('ko-KR')+'만'; };
+const pad = n => String(n).padStart(2,'0');
+const dateKey = p => (p.year||0)*10000+(p.month||0)*100+(p.day||0);
+const dateStr = p => `${p.year}.${pad(p.month)}.${pad(p.day)}`;
+const total = p => (p.amount||0)+(p.vat||0);
+const isPayout = p => p.kind==='지급';
+const received = p => isPayout(p) ? 0 : (p.status==='입금완료' ? total(p) : (p.payments||[]).reduce((a,x)=>a+(x.amount||0),0));
+const outstanding = p => (isPayout(p) || p.status==='떼임') ? 0 : Math.max(0,total(p)-received(p));
+const unpaidOut = p => isPayout(p) ? Math.max(0,(p.amount||0)-expSum(p)) : 0;   // 지급 건의 미지급 잔액
+const profitOf = p => isPayout(p) ? -Math.max(p.amount||0, expSum(p)) : (p.amount||0)-expSum(p);
+const expSum = p => (p.expenses||[]).reduce((a,x)=>a+(x.amount||0),0);
+const budSum = p => (p.budget||[]).reduce((a,x)=>a+(x.planned||0),0);
+function estCalc(e){
+  const sub = (e.items||[]).reduce((a,i)=>a+(i.qty||0)*(i.unitPrice||0),0);
+  const oh = sub*(e.overheadRate||0)/100, pf = sub*(e.profitRate||0)/100;
+  const vat = sub*0.1; const tot = sub+oh+pf+vat;
+  return {sub,oh,pf,vat,tot, trunc: Math.floor(tot/10000)*10000};
+}
+function years(){ return [...new Set(state.projects.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a); }
+function filtered(){ return state.projects.filter(p => (ui.year==='all' || String(p.year)===ui.year)); }
+const kindTag = p => isPayout(p) ? ` <span class="badge" style="background:${hexA(statusColor('지급'),.16)};color:${statusColor('지급')};padding:1px 7px;font-size:11px">지급</span>` : '';
+function badge(s, id){ const c=statusColor(s), st=`style="background:${hexA(c,.16)};color:${c}"`; return id!=null ? `<span class="badge editable" ${st} data-act="statusPop" data-id="${id}" title="클릭해서 지급 여부 변경"><i></i>${esc(s)}<em>▾</em></span>` : `<span class="badge" ${st}><i></i>${esc(s)}</span>`; }
+function delta(cur, prev, suffix=''){
+  if(!prev) return `<span class="delta flat">이전 연도 없음</span>`;
+  const r = (cur-prev)/Math.abs(prev)*100; const cls = r>0.5?'up':r<-0.5?'down':'flat';
+  return `<span class="delta ${cls}">${r>0?'↑':r<0?'↓':'·'} ${Math.abs(r).toFixed(1)}%</span><span>${suffix}</span>`;
+}
+function greeting(){ const h=new Date().getHours(); return h<12?'좋은 아침입니다':h<18?'좋은 오후입니다':'좋은 저녁입니다'; }
+
+/* ---------- rendering ---------- */
+function render(){
+  document.querySelectorAll('.nav[data-nav]').forEach(b=>b.classList.toggle('on', b.dataset.nav===(ui.tab==='list'&&ui.mode==='unpaid'?'unpaid':ui.tab)));
+  $('#navDetail').style.display = ui.detailId ? '' : 'none';
+  $('#cntAll').textContent = filtered().length; const un = filtered().filter(p=>outstanding(p)>0).length; $('#cntUnpaid').textContent = un||'';
+  const ys = years(); if(ui.year!=='all' && !ys.includes(+ui.year)) ui.year = ys.length? String(ys[0]) : 'all';
+  const app = $('#app');
+  if(ui.tab==='dash') app.innerHTML = renderDash();
+  else if(ui.tab==='list') app.innerHTML = renderList();
+  else app.innerHTML = renderDetail();
+  bindCharts();
+}
+function topline(title, sub, extra=''){
+  const ys = years();
+  return `<div class="topline">
+    <div class="greet"><div class="hi">${greeting()} 👋</div><h1>${title}</h1><div class="sub">${sub}</div></div>
+    ${extra}
+    <label class="pill">${ICONS.cal}<select id="yearSel"><option value="all" ${ui.year==='all'?'selected':''}>전체 연도</option>${ys.map(y=>`<option value="${y}" ${ui.year===String(y)?'selected':''}>${y}년</option>`).join('')}</select></label>
+    <button class="btn primary" id="btnNew">${ICONS.plus}새 프로젝트</button>
+  </div>`;
+}
+
+function renderDash(){
+  const all = filtered();
+  const ps = all.filter(p=>!isPayout(p));            // 매출 건
+  const payouts = all.filter(isPayout);               // 지급 건
+  const amt = ps.reduce((a,p)=>a+(p.amount||0),0);
+  const tot = ps.reduce((a,p)=>a+total(p),0);
+  const rec = ps.reduce((a,p)=>a+received(p),0);
+  const out = ps.reduce((a,p)=>a+outstanding(p),0);
+  const lost = ps.filter(p=>p.status==='떼임').reduce((a,p)=>a+total(p),0);
+  const exp = all.reduce((a,p)=>a+expSum(p),0) + payouts.reduce((a,p)=>a+Math.max(0,(p.amount||0)-expSum(p)),0);
+  const profitAll = all.reduce((a,p)=>a+profitOf(p),0);
+  const ongoing = ps.filter(p=>p.status!=='입금완료' && p.status!=='떼임');
+  const prevYear = ui.year==='all'? null : state.projects.filter(p=>p.year===+ui.year-1 && !isPayout(p));
+  const prevAmt = prevYear? prevYear.reduce((a,p)=>a+(p.amount||0),0) : 0;
+  const label = ui.year==='all' ? '전체 기간' : ui.year+'년';
+  const months = Array.from({length:12},(_,i)=>({m:i+1,v:0,n:0}));
+  ps.forEach(p=>{ if(p.month>=1&&p.month<=12){ months[p.month-1].v += p.amount||0; months[p.month-1].n++; } });
+  const yl = years().slice().reverse().map(y=>{ const q=state.projects.filter(p=>p.year===y && !isPayout(p)); return {l:String(y), v:q.reduce((a,p)=>a+(p.amount||0),0), n:q.length}; });
+  const cm = {}; ps.forEach(p=>{ const c=(p.client||'(미지정)').split('(')[0].trim()||'(미지정)'; cm[c]=cm[c]||{n:0,v:0}; cm[c].n++; cm[c].v+=p.amount||0; });
+  const clients = Object.entries(cm).sort((a,b)=>b[1].v-a[1].v).slice(0,7);
+  const sm = {}; STATUSES.forEach(s=>sm[s]={n:0,v:0}); ps.forEach(p=>{ const s=sm[p.status]||(sm[p.status]={n:0,v:0}); s.n++; s.v+=total(p); });
+  const unpaid = ps.filter(p=>outstanding(p)>0).sort((a,b)=>dateKey(b)-dateKey(a));
+  const recent = all.slice().sort((a,b)=>dateKey(b)-dateKey(a)).slice(0,6);
+  const seriesMonthly = ui.year==='all' ? yl.map(x=>({l:x.l+'년',v:x.v,t:`<b>${x.l}년</b>${x.n}건 · ${won(x.v)}원`})) : months.map(x=>({l:x.m+'월',v:x.v,t:`<b>${ui.year}년 ${x.m}월</b>${x.n}건 · ${won(x.v)}원`}));
+  return topline(`<em>${label}</em> 프로젝트 현황`, `매출·수금·지출을 한눈에 확인하세요. 매출 ${ps.length}건${payouts.length?` · 지급 ${payouts.length}건`:''}`) + `
+  <div class="grid kpis">
+    <div class="card kpi link" data-act="goMode" data-mode="" title="프로젝트 목록으로"><div class="tile" style="background:var(--tile1);color:var(--accent)">${ICONS.money}</div><div class="l">매출액 (공급가)</div><div class="v">${won(amt)}원</div><div class="d">${prevYear?delta(amt,prevAmt,'전년 대비'):`<span>부가세 포함 ${won(tot)}원</span>`}</div></div>
+    <div class="card kpi link" data-act="goStatus" data-status="입금완료" title="입금완료 프로젝트 목록으로"><div class="tile" style="background:var(--tile2);color:var(--good)">${ICONS.check}</div><div class="l">입금 완료</div><div class="v">${won(rec)}원</div><div class="d"><span class="delta ${rec/tot>0.7?'up':'flat'}">${tot?Math.round(rec/tot*100):0}% 수금</span><span>합계 ${won(tot)}원 기준</span></div></div>
+    <div class="card kpi link" data-act="goMode" data-mode="unpaid" title="미수금 목록으로"><div class="tile" style="background:var(--tile3);color:var(--crit)">${ICONS.alert}</div><div class="l">미수금 (부가세 포함)</div><div class="v ${out?'neg':''}">${won(out)}원</div><div class="d"><span class="delta ${out?'down':'up'}">${unpaid.length}건</span><span>${lost?`떼임 ${won(lost)}원`:'떼인 금액 없음'}</span></div></div>
+    <div class="card kpi link" data-act="goMode" data-mode="ongoing" title="진행 중 프로젝트 목록으로"><div class="tile" style="background:var(--tile4);color:var(--accent2)">${ICONS.folder}</div><div class="l">진행 중 프로젝트</div><div class="v">${ongoing.length}건</div><div class="d"><span>공급가 ${won(ongoing.reduce((a,p)=>a+(p.amount||0),0))}원</span></div></div>
+    <div class="card kpi link" data-act="goMode" data-mode="expense" title="지출 기록이 있는 프로젝트 목록으로"><div class="tile" style="background:var(--tile5);color:var(--warn)">${ICONS.receipt}</div><div class="l">지출 · 지급</div><div class="v">${won(exp)}원</div><div class="d"><span class="delta ${profitAll<0?'down':'up'}">영업이익 ${wonS(profitAll)}원</span><span>${payouts.length?`지급 건 ${payouts.length}건 포함`:''}</span></div></div>
+  </div>
+  <div class="grid row2" style="margin-bottom:16px">
+    <div class="card"><div class="ch"><span class="ic">${ICONS.chart}</span><h3>${ui.year==='all'?'연도별':ui.year+'년 월별'} 매출 추이</h3><span class="small muted">공급가 기준</span></div>
+      <div style="font-size:22px;font-weight:800;margin:-4px 0 6px">${won(amt)}원 ${prevYear?delta(amt,prevAmt):''}</div>
+      ${areaChart(seriesMonthly,'area1')}
+    </div>
+    <div class="card status-card"><div class="ch"><span class="ic">${ICONS.pie}</span><h3>지급 상태별</h3><span class="small muted">합계(부가세 포함) 기준</span></div>
+      ${donut(Object.entries(sm).filter(([s,x])=>x.n).map(([s,x])=>({l:s,v:x.v,n:x.n,c:statusColor(s)})), ps.length+'건')}
+      <div class="collect"><div class="ch" style="margin:14px 0 8px"><h3 style="font-size:13px">수금 진행률</h3><b>${tot?Math.round(rec/tot*100):0}%</b></div>
+        <div class="stack"><i style="width:${tot?rec/tot*100:0}%;background:var(--good)" title="입금"></i><i style="width:${tot?out/tot*100:0}%;background:var(--crit)" title="미수"></i><i style="width:${tot?lost/tot*100:0}%;background:var(--muted)" title="떼임"></i></div>
+        <div class="mini3"><div><span>합계</span><b>${won(tot)}</b></div><div><span style="color:var(--good)">입금</span><b>${won(rec)}</b></div><div><span style="color:var(--crit)">미수</span><b>${won(out)}</b></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid row3" style="margin-bottom:16px">
+    <div class="card"><div class="ch"><span class="ic">${ICONS.users}</span><h3>주요 거래처</h3><span class="small muted">매출액 순</span></div>
+      <div class="hbar">${clients.map(([c,x])=>`<div class="r"><span title="${esc(c)}" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c)}</span><div class="t"><i style="width:${clients[0][1].v? x.v/clients[0][1].v*100:0}%"></i></div><span class="p">${manwon(x.v)}원 · ${x.n}건</span></div>`).join('')||'<div class="empty">데이터 없음</div>'}</div>
+    </div>
+    <div class="card"><div class="ch"><span class="ic">${ICONS.chart}</span><h3>연도별 매출 비교</h3></div>${barChart(yl.map(x=>({l:x.l,v:x.v,t:`<b>${x.l}년</b>${x.n}건 · ${won(x.v)}원`})),'yr',230,360)}</div>
+    <div class="card"><div class="ch"><span class="ic">${ICONS.clock}</span><h3>최근 프로젝트</h3><button class="btn sm ghost" data-act="goList">전체 보기</button></div>
+      ${recent.map(p=>`<div class="list-row" data-act="open" data-id="${p.id}"><div class="av">${esc((p.client||p.name).slice(0,1))}</div><div class="t"><b>${esc(p.name)}${kindTag(p)}</b><span>${dateStr(p)} · ${esc(p.client||'거래처 미지정')}</span></div><div style="text-align:right"><div class="amt ${isPayout(p)?'neg':''}">${isPayout(p)?'−':''}${won(p.amount)}</div>${badge(p.status)}</div></div>`).join('')||'<div class="empty">프로젝트 없음</div>'}
+    </div>
+  </div>
+  <div class="card"><div class="ch"><span class="ic" style="background:var(--tile3);color:var(--crit)">${ICONS.alert}</span><h3>미수금 현황</h3><span class="small muted">행을 클릭하면 상세로 이동</span><button class="btn sm ghost" data-act="goUnpaid">미수금 목록</button></div>
+    ${unpaid.length? `<div style="max-height:380px;overflow:auto"><table><thead><tr><th>날짜</th><th>품명</th><th>거래처</th><th>상태</th><th class="num">합계</th><th class="num">입금</th><th class="num">미수</th></tr></thead><tbody>
+    ${unpaid.map(p=>`<tr class="click" data-act="open" data-id="${p.id}"><td style="white-space:nowrap">${dateStr(p)}</td><td><b>${esc(p.name)}</b></td><td class="small">${esc(p.client)}</td><td>${badge(p.status, p.id)}</td><td class="num">${won(total(p))}</td><td class="num muted">${won(received(p))}</td><td class="num neg"><b>${won(outstanding(p))}</b></td></tr>`).join('')}
+    </tbody><tfoot><tr><td colspan="6">미수금 합계</td><td class="num neg">${won(out)}</td></tr></tfoot></table></div>` : '<div class="empty">미수금이 없습니다 🎉</div>'}
+  </div>`;
+}
+
+/* charts */
+function niceMax(v){ const p = Math.pow(10, Math.floor(Math.log10(v))); const f = v/p; const n = f<=1?1:f<=2?2:f<=2.5?2.5:f<=4?4:f<=5?5:f<=8?8:10; return n*p; }
+function areaChart(data, id, h=230){
+  const W=680, H=h, padL=56, padR=14, padT=16, padB=30;
+  const nice = niceMax(Math.max(1,...data.map(d=>d.v)));
+  const iw=W-padL-padR, ih=H-padT-padB, n=data.length;
+  const x = i => padL + (n>1? iw*i/(n-1) : iw/2);
+  const y = v => padT+ih - ih*(v/nice);
+  const pts = data.map((d,i)=>[x(i),y(d.v)]);
+  let line=''; pts.forEach(([px,py],i)=>{ if(i===0){ line=`M${px},${py}`; return; } const [ax,ay]=pts[i-1]; const cx=(ax+px)/2; line+=` C${cx},${ay} ${cx},${py} ${px},${py}`; });
+  const area = line + ` L${pts[n-1][0]},${padT+ih} L${pts[0][0]},${padT+ih} Z`;
+  let g=''; for(let i=0;i<=4;i++){ const yy=padT+ih-ih*i/4; g+=`<line x1="${padL}" x2="${W-padR}" y1="${yy}" y2="${yy}"/><text x="${padL-8}" y="${yy+4}" text-anchor="end">${manwon(nice*i/4)}</text>`; }
+  const labels = data.map((d,i)=> (n>14 && i%2) ? '' : `<text x="${x(i)}" y="${H-8}" text-anchor="middle">${esc(d.l)}</text>`).join('');
+  const G = isGlass();
+  const lineStops = G ? '<stop offset="0" stop-color="#38bdf8"/><stop offset=".45" stop-color="#7c5cf6"/><stop offset=".8" stop-color="#ff5fae"/><stop offset="1" stop-color="#ff8a3d"/>' : '<stop offset="0" style="stop-color:var(--s1)"/><stop offset="1" style="stop-color:var(--s2)"/>';
+  const areaStops = G ? '<stop offset="0" stop-color="#7c5cf6" stop-opacity=".55"/><stop offset=".6" stop-color="#ff5fae" stop-opacity=".18"/><stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>' : '<stop offset="0" style="stop-color:var(--s1);stop-opacity:.45"/><stop offset="1" style="stop-color:var(--s2);stop-opacity:.02"/>';
+  return `<svg class="chart area" viewBox="0 0 ${W} ${H}" id="${id}" data-pts='${JSON.stringify(pts.map((p,i)=>[p[0],p[1],data[i].t]))}' data-base="${padT+ih}">
+    <defs><linearGradient id="${id}-g" x1="0" x2="0" y1="0" y2="1">${areaStops}</linearGradient>
+    <linearGradient id="${id}-l" x1="0" x2="1" y1="0" y2="0">${lineStops}</linearGradient></defs>
+    <g class="grid">${g}</g>
+    <path d="${area}" fill="url(#${id}-g)"/><path class="${G?'glow':''}" d="${line}" fill="none" stroke="url(#${id}-l)" stroke-width="${G?4:2.5}" stroke-linecap="round"/>
+    ${G?`<path d="${line}" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.2" stroke-linecap="round" transform="translate(0,-1.5)"/>`:''}
+    <line class="xh" x1="0" x2="0" y1="${padT}" y2="${padT+ih}" stroke-width="1"/>
+    <circle class="dot ${G?'glow':''}" r="${G?7:5}" fill="${G?'#fff':'var(--s1)'}" stroke="${G?'#7c5cf6':'var(--surface)'}" stroke-width="${G?3:2}" style="opacity:0"/>
+    ${labels}<rect class="hit" x="${padL}" y="${padT}" width="${iw}" height="${ih}" fill="transparent"/></svg>`;
+}
+function barChart(data, id, h=220, W=640){
+  const H=h, padL=50, padR=10, padT=14, padB=28;
+  const nice = niceMax(Math.max(1,...data.map(d=>d.v)));
+  const iw=W-padL-padR, ih=H-padT-padB, bw=iw/data.length;
+  let g=''; for(let i=0;i<=4;i++){ const y=padT+ih-ih*i/4; g+=`<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}"/><text x="${padL-6}" y="${y+4}" text-anchor="end">${manwon(nice*i/4)}</text>`; }
+  const G = isGlass();
+  const bars = data.map((d,i)=>{ const x=padL+bw*i+bw*(G?0.3:0.22), w=bw*(G?0.4:0.56), bh=ih*(d.v/nice), y=padT+ih-bh, r=G?Math.min(w/2,bh/2):Math.min(5,w/2,bh);
+    const path = bh>0 ? (G ? `M${x},${padT+ih-r} V${y+r} a${r},${r} 0 0 1 ${r},-${r} H${x+w-r} a${r},${r} 0 0 1 ${r},${r} V${padT+ih-r} a${r},${r} 0 0 1 -${r},${r} H${x+r} a${r},${r} 0 0 1 -${r},-${r} Z` : `M${x},${padT+ih} V${y+r} a${r},${r} 0 0 1 ${r},-${r} H${x+w-r} a${r},${r} 0 0 1 ${r},${r} V${padT+ih} Z`) : '';
+    return `<path class="bar ${G?'glow':''}" d="${path}" fill="url(#${id}-bg)" data-tip="${esc(d.t)}"/><text x="${x+w/2}" y="${H-8}" text-anchor="middle">${esc(d.l)}</text>`; }).join('');
+  const stops = G ? '<stop offset="0" stop-color="#7ff0ff"/><stop offset=".5" stop-color="#7c5cf6"/><stop offset="1" stop-color="#ff5fae"/>' : '<stop offset="0" style="stop-color:var(--s1)"/><stop offset="1" style="stop-color:var(--s2);stop-opacity:.75"/>';
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}"><defs><linearGradient id="${id}-bg" x1="0" x2="0" y1="0" y2="1">${stops}</linearGradient></defs><g class="grid">${g}</g>${bars}</svg>`;
+}
+function groupedChart(cats){
+  const W=640, H=240, padL=52, padR=10, padT=14, padB=44;
+  const nice=niceMax(Math.max(1,...cats.flatMap(c=>[c.a,c.b])));
+  const iw=W-padL-padR, ih=H-padT-padB, gw=iw/cats.length;
+  let g=''; for(let i=0;i<=4;i++){ const y=padT+ih-ih*i/4; g+=`<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}"/><text x="${padL-6}" y="${y+4}" text-anchor="end">${manwon(nice*i/4)}</text>`; }
+  const bars = cats.map((c,i)=>{ const bw=gw*0.3, x0=padL+gw*i+gw*0.18;
+    const mk=(x,v,col,tip)=>{ const bh=ih*(v/nice), y=padT+ih-bh, r=Math.min(4,bw/2,bh); return bh>0?`<path class="bar" fill="${col}" data-tip="${esc(tip)}" d="M${x},${padT+ih} V${y+r} a${r},${r} 0 0 1 ${r},-${r} H${x+bw-r} a${r},${r} 0 0 1 ${r},${r} V${padT+ih} Z"/>`:''; };
+    const lab = c.l.length>7? c.l.slice(0,7)+'…':c.l;
+    return mk(x0,c.a,'var(--s1)',`<b>${c.l}</b>예산 ${won(c.a)}원`) + mk(x0+bw+2,c.b,'var(--s2)',`<b>${c.l}</b>지출 ${won(c.b)}원`) + `<text x="${x0+bw+1}" y="${H-24}" text-anchor="middle">${esc(lab)}</text>`; }).join('');
+  return `<div class="legend" style="margin-bottom:6px"><span><i style="background:var(--s1)"></i>실비 예산</span><span><i style="background:var(--s2)"></i>실제 지출</span></div><svg class="chart" viewBox="0 0 ${W} ${H}"><g class="grid">${g}</g>${bars}</svg>`;
+}
+function donut(segs, center){
+  const sum = segs.reduce((a,s)=>a+s.v,0)||1; const R=60, C=2*Math.PI*R; let off=0;
+  const G = isGlass();
+  const arcs = segs.map(s=>{ const len=C*s.v/sum; const el=`<circle class="${G?'glow':''}" r="${R}" cx="75" cy="75" fill="none" stroke="${s.c}" stroke-width="${G?22:18}" stroke-dasharray="${Math.max(0,len-2)} ${C-Math.max(0,len-2)+2}" stroke-dashoffset="${-off}" transform="rotate(-90 75 75)" data-tip="<b>${esc(s.l)}</b>${s.n}건 · ${won(s.v)}원 · ${Math.round(s.v/sum*100)}%" class="bar"/>`; off+=len; return el; }).join('');
+  return `<div class="donut-wrap"><svg viewBox="0 0 150 150" class="chart" style="overflow:visible">${G?`<circle r="${R}" cx="75" cy="75" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="22"/>`:''}${arcs}<text x="75" y="72" text-anchor="middle" style="font-size:18px;font-weight:800;fill:var(--text)">${esc(center)}</text><text x="75" y="90" text-anchor="middle">프로젝트</text></svg>
+  <div class="donut-list">${segs.map(s=>`<div class="r" data-act="goList" data-status="${esc(s.l)}"><i style="background:${s.c}"></i><span class="n">${esc(s.l)}</span><span class="p">${s.n}건 · ${Math.round(s.v/sum*100)}%</span><b>${manwon(s.v)}</b></div>`).join('')}</div></div>`;
+}
+function bindCharts(){
+  const tip = $('#tip');
+  const show=(html,e)=>{ tip.style.display='block'; tip.innerHTML=html; const r=tip.getBoundingClientRect(); tip.style.left=Math.min(window.innerWidth-r.width-8, e.clientX+14)+'px'; tip.style.top=(e.clientY-r.height-12 > 0 ? e.clientY-r.height-12 : e.clientY+14)+'px'; };
+  document.querySelectorAll('[data-tip]').forEach(el=>{ el.addEventListener('mousemove', e=>show(el.dataset.tip,e)); el.addEventListener('mouseleave', ()=> tip.style.display='none'); });
+  document.querySelectorAll('svg.area').forEach(svg=>{
+    const pts = JSON.parse(svg.dataset.pts); const xh=svg.querySelector('.xh'), dot=svg.querySelector('.dot'); const hit=svg.querySelector('.hit');
+    hit.addEventListener('mousemove', e=>{ const r=svg.getBoundingClientRect(); const sx=(e.clientX-r.left)*(svg.viewBox.baseVal.width/r.width);
+      let best=0; pts.forEach((p,i)=>{ if(Math.abs(p[0]-sx)<Math.abs(pts[best][0]-sx)) best=i; }); const p=pts[best];
+      xh.setAttribute('x1',p[0]); xh.setAttribute('x2',p[0]); xh.style.opacity=1; dot.setAttribute('cx',p[0]); dot.setAttribute('cy',p[1]); dot.style.opacity=1; show(p[2],e); });
+    hit.addEventListener('mouseleave', ()=>{ xh.style.opacity=0; dot.style.opacity=0; tip.style.display='none'; });
+  });
+}
+
+function renderList(){
+  let ps = filtered();
+  const q = ui.q.trim().toLowerCase();
+  if(q) ps = ps.filter(p=>[p.name,p.client,p.note].join(' ').toLowerCase().includes(q));
+  if(ui.status) ps = ps.filter(p=>p.status===ui.status);
+  if(ui.mode==='unpaid') ps = ps.filter(p=>outstanding(p)>0);
+  else if(ui.mode==='ongoing') ps = ps.filter(p=>p.status!=='입금완료' && p.status!=='떼임');
+  else if(ui.mode==='expense') ps = ps.filter(p=>expSum(p)>0);
+  const {key,dir} = ui.sort;
+  const profit = profitOf;
+  const val = p => key==='date'?dateKey(p):key==='amount'?(p.amount||0):key==='total'?total(p):key==='out'?(isPayout(p)?unpaidOut(p):outstanding(p)):key==='exp'?expSum(p):key==='profit'?profit(p):String(p[key]||'');
+  ps.sort((a,b)=>{ const x=val(a),y=val(b); return (typeof x==='number'? x-y : x.localeCompare(y,'ko'))*dir; });
+  const COLS=[['date','날짜',104],['name','품명',280],['client','거래처 / 담당',150],['amount','금액',112],['vat','부가세',92],['total','합계',120],['status','지급 여부',118],['out','미수',112],['exp','지출',104],['profit','영업이익',112],['note','비고',220],['act','',170]];
+  const cw = k => (pref.colW||{})[k] || COLS.find(c=>c[0]===k)[2];
+  const totalW = COLS.reduce((a,c)=>a+cw(c[0]),0);
+  const th = (k,l,cls='',sortable=true) => `<th class="${cls}" ${sortable?`data-act="sort" data-key="${k}" style="cursor:pointer"`:''}>${l}${sortable&&key===k?(dir>0?' ▲':' ▼'):''}<i class="rs" data-act="noop" data-col="${k}" title="드래그해서 너비 조절"></i></th>`;
+  const sg = p => isPayout(p)?-1:1;
+  const sumA = ps.reduce((a,p)=>a+sg(p)*(p.amount||0),0), sumV=ps.reduce((a,p)=>a+sg(p)*(p.vat||0),0), sumT=ps.reduce((a,p)=>a+sg(p)*total(p),0), sumO=ps.reduce((a,p)=>a+outstanding(p),0), sumE=ps.reduce((a,p)=>a+expSum(p),0), sumP=ps.reduce((a,p)=>a+profit(p),0);
+  const MODE_T={unpaid:'<em>미수금</em> 목록',ongoing:'<em>진행 중</em> 프로젝트',expense:'<em>지출 기록</em>이 있는 프로젝트'};
+  return topline(MODE_T[ui.mode]||'<em>프로젝트</em> 목록', `${ps.length}건 · 합계 ${won(sumT)}원${sumO?` · 미수 ${won(sumO)}원`:''}`) + `
+  <div class="card">
+  <div class="toolbar">
+    <label class="pill">${ICONS.search}<input type="search" id="q" placeholder="품명 · 거래처 · 비고 검색" value="${esc(ui.q)}"></label>
+    <label class="pill"><select id="statusSel"><option value="">모든 상태</option>${STATUSES.map(s=>`<option ${ui.status===s?'selected':''}>${s}</option>`).join('')}</select></label>
+    <div class="seg" style="width:auto">${[['','전체'],['unpaid','미수만'],['ongoing','진행 중만'],['expense','지출 기록']].map(([m,l])=>`<button class="${ui.mode===m?'on':''}" data-act="goMode" data-mode="${m}" style="padding:6px 12px">${l}</button>`).join('')}</div>
+    <span class="spacer" style="flex:1"></span>
+    <span class="small muted">지급 여부 배지를 클릭하면 바로 바꿀 수 있고, 열 머리글 경계를 끌어 너비를 조절할 수 있습니다</span>
+    ${pref.colW?'<button class="btn sm ghost" data-act="resetCols">열 너비 초기화</button>':''}
+  </div>
+  <div class="tablewrap"><table id="listTable" class="list" style="width:${totalW}px">
+    <colgroup>${COLS.map(c=>`<col data-col="${c[0]}" style="width:${cw(c[0])}px">`).join('')}</colgroup>
+    <thead><tr>${th('date','날짜')}${th('name','품명')}${th('client','거래처 / 담당')}${th('amount','금액','num')}${th('vat','부가세','num',false)}${th('total','합계','num')}${th('status','지급 여부')}${th('out','미수','num')}${th('exp','지출','num')}${th('profit','영업이익','num')}${th('note','비고','',false)}${th('act','','',false)}</tr></thead>
+    <tbody>${ps.map(p=>{ const pf=profit(p); return `<tr class="click" data-act="open" data-id="${p.id}">
+      <td>${dateStr(p)}</td><td title="${esc(p.name)}"><b>${esc(p.name)}</b>${kindTag(p)}${p.estimate||p.budget.length||p.expenses.length?' <span class="muted small">📎</span>':''}</td><td class="small" title="${esc(p.client)}">${esc(p.client)}</td>
+      <td class="num ${isPayout(p)?'neg':''}">${isPayout(p)?'−':''}${wonS(p.amount)}</td><td class="num muted">${isPayout(p)?'−':''}${wonS(p.vat)}</td><td class="num ${isPayout(p)?'neg':''}"><b>${isPayout(p)?'−':''}${wonS(total(p))}</b></td><td>${badge(p.status, p.id)}</td>
+      <td class="num ${isPayout(p)?(unpaidOut(p)?'':'muted'):(outstanding(p)?'neg':'muted')}" ${isPayout(p)?'style="color:var(--warn)" title="지급 건: 아직 지급하지 않은 금액"':''}>${isPayout(p)?(unpaidOut(p)?'미지급 '+won(unpaidOut(p)):'-'):(outstanding(p)?won(outstanding(p)):'-')}</td><td class="num muted">${expSum(p)?won(expSum(p)):'-'}</td>
+      <td class="num ${pf<0?'neg':'pos'}" title="${isPayout(p)?'지급 건: −지급액 (금액과 지출 중 큰 값)':expSum(p)?'금액(공급가) − 지출 '+won(expSum(p)):'지출 기록 없음 · 금액(공급가) 전체'}">${wonS(pf)}</td>
+      <td class="small muted" title="${esc(p.note)}">${esc(p.note)}</td>
+      <td><button class="btn sm" data-act="edit" data-id="${p.id}">수정</button> <button class="btn sm" data-act="dup" data-id="${p.id}" title="이 프로젝트를 바탕으로 새 프로젝트 만들기">복사</button> <button class="btn sm danger" data-act="del" data-id="${p.id}">삭제</button></td></tr>`; }).join('') || '<tr><td colspan="12" class="empty">프로젝트가 없습니다</td></tr>'}</tbody>
+    <tfoot><tr><td colspan="3">계 <span class="small muted">(지급 건은 차감)</span></td><td class="num">${wonS(sumA)}</td><td class="num">${wonS(sumV)}</td><td class="num">${wonS(sumT)}</td><td></td><td class="num neg">${sumO?won(sumO):'-'}</td><td class="num">${sumE?won(sumE):'-'}</td><td class="num ${sumP<0?'neg':'pos'}">${wonS(sumP)}</td><td colspan="2"></td></tr></tfoot>
+  </table></div></div>`;
+}
+
+function renderDetail(){
+  const p = state.projects.find(x=>x.id===ui.detailId);
+  if(!p) return topline('프로젝트 상세','') + '<div class="card empty">프로젝트를 선택하세요</div>';
+  const t = total(p), r = received(p), o = outstanding(p), ex = expSum(p), bu = budSum(p);
+  const est = p.estimate ? estCalc(p.estimate) : null;
+  const tabs = [['summary','요약'],['estimate','견적서'],['budget','실비 예산'],['expenses','지출내역'],['payments','입금내역']];
+  return `
+  <div class="topline">
+    <button class="btn" data-act="back">${ICONS.back}목록</button>
+    <div class="greet"><div class="hi">${dateStr(p)} · ${esc(p.client||'거래처 미지정')} · ${badge(p.status, p.id)}${kindTag(p)}</div><h1>${esc(p.name)}</h1>${p.note?`<div class="sub">${esc(p.note)}</div>`:''}</div>
+    <button class="btn" data-act="edit" data-id="${p.id}">${ICONS.edit}기본정보 수정</button>
+    <button class="btn" data-act="dup" data-id="${p.id}" title="기본정보·견적서·실비 예산을 복사한 새 프로젝트">복사</button>
+    <button class="btn" data-act="print">${ICONS.print}인쇄</button>
+  </div>
+  <div class="grid kpis">
+    <div class="card kpi"><div class="tile" style="background:var(--tile1);color:var(--accent)">${ICONS.money}</div><div class="l">${isPayout(p)?'지급 예정 금액 (공급가)':'계약금액 (공급가)'}</div><div class="v ${isPayout(p)?'neg':''}">${isPayout(p)?'−':''}${won(p.amount)}원</div><div class="d"><span>부가세 포함 ${won(t)}원</span></div></div>
+    ${isPayout(p)?`<div class="card kpi"><div class="tile" style="background:var(--tile5);color:var(--warn)">${ICONS.alert}</div><div class="l">미지급 잔액</div><div class="v ${unpaidOut(p)?'':'pos'}" style="${unpaidOut(p)?'color:var(--warn)':''}">${won(unpaidOut(p))}원</div><div class="d"><span>지급 완료 ${won(ex)}원</span></div></div>`
+    :`<div class="card kpi"><div class="tile" style="background:${o?'var(--tile3)':'var(--tile2)'};color:${o?'var(--crit)':'var(--good)'}">${o?ICONS.alert:ICONS.check}</div><div class="l">미수금</div><div class="v ${o?'neg':'pos'}">${won(o)}원</div><div class="d"><span class="delta ${t&&r/t>=1?'up':'flat'}">${t?Math.round(r/t*100):0}% 입금</span><span>${won(r)}원</span></div></div>`}
+    <div class="card kpi"><div class="tile" style="background:var(--tile5);color:var(--warn)">${ICONS.receipt}</div><div class="l">실제 지출</div><div class="v">${won(ex)}원</div><div class="d">${bu?`<span class="delta ${bu-ex<0?'down':'up'}">예산 ${Math.round(ex/bu*100)}% 집행</span><span>잔여 ${wonS(bu-ex)}원</span>`:'<span>실비 예산 미입력</span>'}</div></div>
+    <div class="card kpi"><div class="tile" style="background:var(--tile4);color:var(--accent2)">${ICONS.chart}</div><div class="l">${isPayout(p)?'영업이익 (지급 건: −지급액)':'예상 이익 (공급가 − 지출)'}</div><div class="v ${profitOf(p)<0?'neg':'pos'}">${wonS(profitOf(p))}원</div><div class="d">${isPayout(p)?'<span>위고디자인이 지급하는 건</span>':`<span class="delta ${(p.amount-ex)<0?'down':'up'}">${p.amount?Math.round((p.amount-ex)/p.amount*100):0}% 마진</span>${bu?`<span>예산 기준 ${wonS(p.amount-bu)}원</span>`:''}`}</div></div>
+    ${est?`<div class="card kpi"><div class="tile" style="background:var(--tile1);color:var(--accent)">${ICONS.receipt}</div><div class="l">견적서 합계</div><div class="v">${won(est.trunc)}원</div><div class="d"><span>산출 ${won(est.tot)}원 · 만단위 절사</span></div></div>`:''}
+  </div>
+  <div class="sub-tabs">${tabs.map(([k,l])=>`<button class="${ui.dtab===k?'on':''}" data-act="dtab" data-k="${k}">${l}</button>`).join('')}</div>
+  ${({summary:dSummary,estimate:dEstimate,budget:dBudget,expenses:dExpenses,payments:dPayments})[ui.dtab](p)}`;
+}
+function dSummary(p){
+  const cats = {}; (p.budget||[]).forEach(b=>cats[b.category]={a:b.planned||0,b:0});
+  (p.expenses||[]).forEach(e=>{ const c=e.category||'(미분류)'; cats[c]=cats[c]||{a:0,b:0}; cats[c].b+=e.amount||0; });
+  const arr = Object.entries(cats).map(([l,x])=>({l,...x}));
+  const recent = (p.expenses||[]).slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,8);
+  return `<div class="grid row2">
+    <div class="card"><div class="ch"><span class="ic">${ICONS.chart}</span><h3>예산 대비 지출 (항목별)</h3></div>${arr.length? groupedChart(arr) : '<div class="empty">실비 예산이나 지출을 입력하면 비교 차트가 표시됩니다</div>'}</div>
+    <div class="card"><div class="ch"><span class="ic">${ICONS.clock}</span><h3>최근 지출</h3><button class="btn sm ghost" data-act="dtab" data-k="expenses">전체 보기</button></div>${recent.length?`<table><thead><tr><th>날짜</th><th>항목</th><th class="num">금액</th></tr></thead><tbody>${recent.map(e=>`<tr><td style="white-space:nowrap">${e.date}</td><td>${esc(e.item)}<div class="small muted">${esc(e.note)}</div></td><td class="num">${won(e.amount)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">지출 기록이 없습니다</div>'}</div>
+  </div>`;
+}
+function dEstimate(p){
+  const e = p.estimate;
+  if(!e) return `<div class="card"><div class="empty">견적서가 없습니다<br><br><button class="btn primary" data-act="estNew">${ICONS.plus}견적서 만들기</button></div></div>`;
+  const c = estCalc(e);
+  const groups = [...new Set(e.items.map(i=>i.group||'기타'))];
+  let rows=''; let n=0;
+  groups.forEach(g=>{ const its = e.items.map((it,idx)=>({it,idx})).filter(x=>(x.it.group||'기타')===g); const gs = its.reduce((a,x)=>a+(x.it.qty||0)*(x.it.unitPrice||0),0);
+    rows += `<tr class="grp"><td colspan="6">${esc(g)}</td><td class="num">${won(gs)}</td><td></td></tr>`;
+    its.forEach(({it,idx})=>{ n++; rows += `<tr><td class="muted">${n}</td><td>${esc(it.name)}</td><td class="num">${(it.qty||0).toLocaleString('ko-KR')}</td><td>${esc(it.unit)}</td><td class="num">${won(it.unitPrice)}</td><td class="small muted">${esc(it.note)}</td><td class="num">${won((it.qty||0)*(it.unitPrice||0))}</td><td style="white-space:nowrap"><button class="btn sm" data-act="estItemEdit" data-i="${idx}">수정</button> <button class="btn sm" data-act="estItemDup" data-i="${idx}">복사</button> <button class="btn sm danger" data-act="estItemDel" data-i="${idx}">삭제</button></td></tr>`; });
+  });
+  return `<div class="card">
+    <div class="head"><div style="flex:1"><h3 style="margin:0;font-size:16px">${esc(e.title||'산출내역서')} <span class="muted small">${esc(e.date||'')}</span></h3><div class="meta">${esc(e.spec||'')}</div></div>
+      <button class="btn" data-act="estMeta">견적 정보 수정</button><button class="btn" data-act="estApply" title="견적서 절사 합계를 이 프로젝트의 금액(공급가)에 반영">금액에 반영</button><button class="btn" data-act="estCsv">CSV</button><button class="btn primary" data-act="estItemNew">${ICONS.plus}항목 추가</button></div>
+    <table style="margin-top:14px"><thead><tr><th>번호</th><th>항목</th><th class="num">수량</th><th>단위</th><th class="num">단가</th><th>비고</th><th class="num">금액</th><th></th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="8" class="empty">항목을 추가하세요</td></tr>'}</tbody>
+    <tfoot>
+      <tr><td colspan="6">소계</td><td class="num">${won(c.sub)}</td><td></td></tr>
+      <tr><td colspan="6">일반관리비 (${e.overheadRate||0}%)</td><td class="num">${won(c.oh)}</td><td></td></tr>
+      <tr><td colspan="6">이윤 (${e.profitRate||0}%)</td><td class="num">${won(c.pf)}</td><td></td></tr>
+      <tr><td colspan="6">부가가치세 (10%)</td><td class="num">${won(c.vat)}</td><td></td></tr>
+      <tr><td colspan="6">합계</td><td class="num">${won(c.tot)}</td><td class="small muted">만단위 절사 ${won(c.trunc)}</td></tr>
+    </tfoot></table></div>`;
+}
+function dBudget(p){
+  const spent = {}; (p.expenses||[]).forEach(e=>{ const c=e.category||'(미분류)'; spent[c]=(spent[c]||0)+(e.amount||0); });
+  const taxTag = b => b.taxMode==='vat'?'<div class="small" style="color:var(--info)">+부가세 10%</div>':b.taxMode==='wh33'?'<div class="small" style="color:var(--warn)">−3.3% 원천징수</div>':'';
+  const rows = (p.budget||[]).map((b,i)=>{ const s=spent[b.category]||0; const pct = b.planned? s/b.planned*100:0; return `<tr><td>${esc(b.category)}</td><td class="num muted">${b.unitPrice?won(b.unitPrice):'-'}${taxTag(b)}</td><td class="num">${won(b.planned)}</td><td class="num">${won(s)}</td><td class="num ${b.planned-s<0?'neg':''}">${wonS(b.planned-s)}</td><td style="width:22%"><div class="bar-h"><i class="${pct>100?'over':''}" style="width:${Math.min(100,pct)}%"></i></div><div class="small muted">${Math.round(pct)}%</div></td><td class="small muted">${esc(b.note)}</td><td style="white-space:nowrap"><button class="btn sm" data-act="budEdit" data-i="${i}">수정</button> <button class="btn sm" data-act="budDup" data-i="${i}">복사</button> <button class="btn sm danger" data-act="budDel" data-i="${i}">삭제</button></td></tr>`; }).join('');
+  const un = Object.entries(spent).filter(([c])=>!(p.budget||[]).some(b=>b.category===c));
+  const bu=budSum(p), ex=expSum(p);
+  return `<div class="card"><div class="head"><div style="flex:1"><h3 style="margin:0;font-size:16px">실비 예산 (원가 계획)</h3><div class="meta">항목별 계획 금액을 입력하면 지출내역의 분류와 자동 비교됩니다</div></div><button class="btn primary" data-act="budNew">${ICONS.plus}예산 항목</button></div>
+  <table style="margin-top:14px"><thead><tr><th>항목</th><th class="num">단가</th><th class="num">예산</th><th class="num">지출</th><th class="num">잔여</th><th>집행률</th><th>비고</th><th></th></tr></thead>
+  <tbody>${rows}${un.map(([c,s])=>`<tr><td>${esc(c)} <span class="muted small">(예산 없음)</span></td><td></td><td class="num muted">-</td><td class="num">${won(s)}</td><td class="num neg">${wonS(-s)}</td><td></td><td></td><td></td></tr>`).join('')}${!rows&&!un.length?'<tr><td colspan="8" class="empty">예산 항목이 없습니다</td></tr>':''}</tbody>
+  <tfoot><tr><td>합계</td><td></td><td class="num">${won(bu)}</td><td class="num">${won(ex)}</td><td class="num ${bu-ex<0?'neg':''}">${wonS(bu-ex)}</td><td colspan="3"></td></tr>
+  <tr><td>계약금액(공급가) 대비 차액</td><td></td><td class="num ${p.amount-bu<0?'neg':''}">${wonS(p.amount-bu)}</td><td class="num ${p.amount-ex<0?'neg':''}">${wonS(p.amount-ex)}</td><td colspan="4"></td></tr></tfoot></table></div>`;
+}
+function dExpenses(p){
+  const SORTS=[['date-desc','날짜 ↓'],['date-asc','날짜 ↑'],['item','항목 가나다'],['cat','분류'],['amount-desc','금액 ↓'],['amount-asc','금액 ↑']];
+  const cmp = (a,b)=>{ const k=ui.expSort;
+    if(k==='date-desc') return b.e.date.localeCompare(a.e.date) || b.i-a.i;
+    if(k==='date-asc') return a.e.date.localeCompare(b.e.date) || a.i-b.i;
+    if(k==='item') return (a.e.item||'').localeCompare(b.e.item||'','ko') || b.e.date.localeCompare(a.e.date);
+    if(k==='cat') return (a.e.category||'ㅎㅎㅎ').localeCompare(b.e.category||'ㅎㅎㅎ','ko') || b.e.date.localeCompare(a.e.date);
+    if(k==='amount-desc') return (b.e.amount||0)-(a.e.amount||0);
+    return (a.e.amount||0)-(b.e.amount||0); };
+  const all = (p.expenses||[]).map((e,i)=>({e,i})).sort(cmp);
+  const row = ({e,i},n) => `<tr><td class="muted">${n}</td><td style="white-space:nowrap">${e.date}</td><td>${esc(e.item)}</td><td class="small">${e.category?`<span class="badge">${esc(e.category)}</span>`:''}</td><td class="num muted">${e.unitPrice?won(e.unitPrice):'-'}${e.taxMode==='vat'?'<div class="small" style="color:var(--info)">+부가세 10%</div>':e.taxMode==='wh33'?'<div class="small" style="color:var(--warn)">−3.3% 원천징수</div>':''}</td><td class="num"><b>${won(e.amount)}</b></td><td class="small muted">${esc(e.note)}</td><td style="white-space:nowrap"><button class="btn sm" data-act="expEdit" data-i="${i}">수정</button> <button class="btn sm" data-act="expDup" data-i="${i}" title="이 항목을 바탕으로 새 지출 추가">복사</button> <button class="btn sm danger" data-act="expDel" data-i="${i}">삭제</button></td></tr>`;
+  let body='';
+  if(ui.expGroup){
+    const groups={}; all.forEach(x=>{ const c=x.e.category||'(미분류)'; (groups[c]=groups[c]||[]).push(x); });
+    const keys=Object.keys(groups).sort((a,b)=>a==='(미분류)'?1:b==='(미분류)'?-1:a.localeCompare(b,'ko'));
+    let n=0;
+    keys.forEach(c=>{ const g=groups[c]; const sub=g.reduce((a,x)=>a+(x.e.amount||0),0);
+      body += `<tr class="grp"><td colspan="5">${esc(c)} <span class="muted small">· ${g.length}건</span></td><td class="num">${won(sub)}</td><td colspan="2"></td></tr>`;
+      g.forEach(x=>{ n++; body += row(x,n); }); });
+  } else body = all.map((x,n)=>row(x,n+1)).join('');
+  return `<div class="card"><div class="head"><div style="flex:1"><h3 style="margin:0;font-size:16px">지출 내역서</h3><div class="meta">원천징수(3.3%) 등 실제 지급액을 금액에 입력하세요</div></div><button class="btn" data-act="expCsv">CSV</button><button class="btn primary" data-act="expNew">${ICONS.plus}지출 추가</button></div>
+  <div class="toolbar" style="margin:12px 0 4px"><span class="small muted">정렬</span><div class="seg" style="width:auto">${SORTS.map(([k,l])=>`<button class="${ui.expSort===k?'on':''}" data-act="expSort" data-k="${k}" style="padding:5px 10px">${l}</button>`).join('')}</div>
+    <button class="btn sm ${ui.expGroup?'primary':''}" data-act="expGroupToggle" style="margin-left:6px">분류별 묶기${ui.expGroup?' ✓':''}</button></div>
+  <table style="margin-top:8px"><thead><tr><th>번호</th><th>날짜</th><th>항목</th><th>분류</th><th class="num">단가</th><th class="num">금액</th><th>비고</th><th></th></tr></thead>
+  <tbody>${body||'<tr><td colspan="8" class="empty">지출 기록이 없습니다</td></tr>'}</tbody>
+  <tfoot><tr><td colspan="5">합계 · ${all.length}건</td><td class="num">${won(expSum(p))}</td><td colspan="2"></td></tr></tfoot></table></div>`;
+}
+function dPayments(p){
+  const t=total(p);
+  const ps = (p.payments||[]).map((e,i)=>({e,i})).sort((a,b)=>b.e.date.localeCompare(a.e.date));
+  return `<div class="card"><div class="head"><div style="flex:1"><h3 style="margin:0;font-size:16px">입금 내역</h3><div class="meta">선금·중도금·잔금을 기록하면 미수금이 자동 계산됩니다. 상태가 '입금완료'이면 전액 입금으로 계산합니다.</div></div><button class="btn primary" data-act="payNew">${ICONS.plus}입금 추가</button></div>
+  <table style="margin-top:14px"><thead><tr><th>날짜</th><th>내용</th><th class="num">금액</th><th></th></tr></thead>
+  <tbody>${ps.map(({e,i})=>`<tr><td>${e.date}</td><td>${esc(e.note)}</td><td class="num">${won(e.amount)}</td><td style="white-space:nowrap"><button class="btn sm" data-act="payEdit" data-i="${i}">수정</button> <button class="btn sm" data-act="payDup" data-i="${i}">복사</button> <button class="btn sm danger" data-act="payDel" data-i="${i}">삭제</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty">입금 기록이 없습니다</td></tr>'}</tbody>
+  <tfoot><tr><td colspan="2">입금 합계 / 계약합계 ${won(t)}</td><td class="num">${won(received(p))}</td><td></td></tr><tr><td colspan="2">미수금</td><td class="num ${outstanding(p)?'neg':''}">${won(outstanding(p))}</td><td></td></tr></tfoot></table></div>`;
+}
+
+/* ---------- status popover ---------- */
+function closePop(){ const p=document.getElementById('pop'); if(p) p.remove(); }
+function statusPopover(anchor, p){
+  closePop();
+  const custom=[...new Set(state.projects.map(x=>x.status).filter(s=>s&&!STATUSES.includes(s)))];
+  const pop=document.createElement('div'); pop.className='pop'; pop.id='pop';
+  const list=[...STATUSES,...custom]; if(p.status && !list.includes(p.status)) list.push(p.status);
+  pop.innerHTML = `<div class="pop-t">지급 여부 변경 · ${esc(p.name)} <span style="float:right">● 색 변경</span></div>${list.map(s=>`<div class="pop-row"><button class="pop-i ${s===p.status?'on':''}" data-s="${esc(s)}">${badge(s)}${s===p.status?'<span class="chk">✓</span>':''}</button><button class="pop-color" data-s="${esc(s)}" title="'${esc(s)}' 색상 변경"><i style="background:${statusColor(s)}"></i></button></div><div class="swatches" data-for="${esc(s)}" style="display:none">${PALETTE.map(c=>`<button data-c="${c}" class="${statusColor(s)===c?'on':''}" style="background:${c}" title="${c}"></button>`).join('')}<label title="직접 고르기">+<input type="color" value="${statusColor(s)}"></label></div>`).join('')}
+    <div class="pop-c"><input type="text" placeholder="직접 입력 (예: 잔금 대기)" maxlength="14"><button class="btn sm primary" type="button">적용</button></div>`;
+  document.body.appendChild(pop);
+  const r=anchor.getBoundingClientRect();
+  pop.style.left = Math.max(8, Math.min(r.left, window.innerWidth - pop.offsetWidth - 8))+'px';
+  pop.style.top = (r.bottom + pop.offsetHeight + 8 < window.innerHeight ? r.bottom + 6 : r.top - pop.offsetHeight - 6)+'px';
+  const apply = s => { s=String(s||'').trim(); if(!s) return; p.status=s; save(); closePop(); render(); };
+  pop.querySelectorAll('.pop-i').forEach(b=>b.onclick=()=>apply(b.dataset.s));
+  const setColor = (s,c) => { state.statusColors = state.statusColors||{}; if(c===DEFAULT_COLORS[s]) delete state.statusColors[s]; else state.statusColors[s]=c; save(); render(); const nb=document.querySelector(`[data-act="statusPop"][data-id="${p.id}"]`); if(nb) statusPopover(nb, p); };
+  pop.querySelectorAll('.pop-color').forEach(b=>b.onclick=e=>{ e.stopPropagation(); const sw=pop.querySelector(`.swatches[data-for="${CSS.escape(b.dataset.s)}"]`); const open=sw.style.display!=='none'; pop.querySelectorAll('.swatches').forEach(x=>x.style.display='none'); sw.style.display=open?'none':'flex'; });
+  pop.querySelectorAll('.swatches').forEach(sw=>{ const s=sw.dataset.for; sw.querySelectorAll('button[data-c]').forEach(b=>b.onclick=()=>setColor(s,b.dataset.c)); const ci=sw.querySelector('input[type=color]'); ci.addEventListener('change', ()=>setColor(s, ci.value)); });
+  const inp=pop.querySelector('input'); pop.querySelector('.pop-c .btn').onclick=()=>apply(inp.value);
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); apply(inp.value); } });
+  setTimeout(()=>inp.focus(),0);
+}
+document.addEventListener('mousedown', e=>{ const pop=document.getElementById('pop'); if(pop && !pop.contains(e.target) && !e.target.closest('.badge.editable')) closePop(); });
+
+/* ---------- modal forms ---------- */
+function openForm(title, fields, values, onSubmit){
+  const bg = $('#modalBg'), m = $('#modal');
+  m.innerHTML = `<h2>${esc(title)}</h2><form class="form" id="mform">${fields.map(f=>{
+    const v = values[f.k] ?? f.def ?? '';
+    let inp;
+    if(f.type==='select') inp = `<select name="${f.k}">${f.opts.map(o=>`<option ${o===v?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+    else if(f.type==='textarea') inp = `<textarea name="${f.k}" rows="3">${esc(v)}</textarea>`;
+    else if(f.type==='number') inp = `<input type="number" name="${f.k}" value="${v}" step="${f.step||1}" ${f.attr||''}>`;
+    else if(f.type==='date') inp = `<input type="date" name="${f.k}" value="${esc(v)}">`;
+    else inp = `<input type="text" name="${f.k}" value="${esc(v)}" ${f.list?`list="${f.list}"`:''} ${f.attr||''}>`;
+    return `<label class="${f.full?'full':''}">${esc(f.label)}${inp}</label>`; }).join('')}
+    ${fields.filter(f=>f.listOpts).map(f=>`<datalist id="${f.list}">${f.listOpts.map(o=>`<option value="${esc(o)}">`).join('')}</datalist>`).join('')}
+    <div class="actions" style="grid-column:1/-1"><button type="button" class="btn" id="mcancel">취소</button><button type="submit" class="btn primary">저장</button></div></form>`;
+  bg.classList.add('on');
+  const form = $('#mform');
+  const first = form.querySelector('input,select,textarea'); if(first) first.focus();
+  form.querySelectorAll('input[type=date]').forEach(d=>d.addEventListener('change', ()=>{ d.blur(); }));
+  $('#mcancel').onclick = closeModal;
+  form.onsubmit = e => { e.preventDefault(); const fd = new FormData(form); const out = {};
+    fields.forEach(f=>{ let v = fd.get(f.k); if(f.type==='number') v = v===''?0:Number(v); else v = String(v??'').trim(); out[f.k]=v; });
+    onSubmit(out); closeModal(); save(); render(); };
+  return form;
+}
+function closeModal(){ $('#modalBg').classList.remove('on'); }
+$('#modalBg').addEventListener('click', e=>{ if(e.target.id==='modalBg') closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal(); closePop(); } });
+
+function projectForm(p, dup){
+  const isNew = !p || dup; const now = new Date();
+  const vals = p ? Object.assign({kind:'매출'}, p, dup?{name:p.name+' (복사)'}:{}) : {year:now.getFullYear(), month:now.getMonth()+1, day:now.getDate(), status:'진행중', kind:'매출', amount:0, vat:0};
+  const clients = [...new Set(state.projects.map(x=>x.client).filter(Boolean))];
+  const form = openForm(dup?'프로젝트 복사 (새 프로젝트로 저장)':isNew?'새 프로젝트':'프로젝트 수정', [
+    {k:'name',label:'품명 (프로젝트명)',full:true,attr:'required'},
+    {k:'client',label:'거래처 / 담당',full:true,list:'clients',listOpts:clients},
+    {k:'year',label:'연도',type:'number'},{k:'month',label:'월',type:'number',attr:'min="1" max="12"'},{k:'day',label:'일',type:'number',attr:'min="1" max="31"'},
+    {k:'kind',label:'구분',type:'select',opts:['매출','지급']},
+    {k:'status',label:'지급 여부',type:'select',opts:[...STATUSES, ...[...new Set(state.projects.map(x=>x.status).filter(s=>s&&!STATUSES.includes(s)))]]},
+    {k:'amount',label:'금액 (공급가)',type:'number'},{k:'vat',label:'부가세 (금액 입력 시 10% 자동)',type:'number'},
+    {k:'note',label:'비고',type:'textarea',full:true},
+  ], vals, out => {
+    if(isNew){ const np = Object.assign({id: state.nextId++, estimate: dup&&p.estimate ? JSON.parse(JSON.stringify(p.estimate)) : null, budget: dup ? JSON.parse(JSON.stringify(p.budget||[])) : [], expenses:[], payments:[]}, out); state.projects.push(np); ui.detailId = np.id; ui.tab='detail'; ui.dtab='summary'; }
+    else Object.assign(p, out);
+  });
+  const a = form.querySelector('[name=amount]'), v = form.querySelector('[name=vat]');
+  a.addEventListener('input', ()=>{ v.value = Math.round(Number(a.value||0)*0.1); });
+  const k = form.querySelector('[name=kind]'); const kh=document.createElement('span'); kh.className='small muted'; k.parentElement.appendChild(kh);
+  const kHint=()=>{ kh.textContent = k.value==='지급' ? '위고디자인이 내는 돈 (알바비·외주비 등). 매출에서 제외되고 영업이익은 −지급액' : '거래처에서 받는 돈. 매출·미수금에 포함'; }; k.addEventListener('change',kHint); kHint();
+}
+function estItemForm(p, idx, dup){
+  const e = p.estimate; const src = idx!=null ? e.items[idx] : null; const it = dup ? null : src;
+  const groups = [...new Set(e.items.map(i=>i.group).filter(Boolean))];
+  openForm(dup?'견적 항목 복사':it?'견적 항목 수정':'견적 항목 추가', [
+    {k:'group',label:'구분 (예: 기획 및 디자인)',full:true,list:'groups',listOpts:groups.length?groups:['기획 및 디자인','사진촬영 및 이미지','인쇄 및 제작','배송']},
+    {k:'name',label:'항목',full:true,attr:'required'},
+    {k:'qty',label:'수량',type:'number',step:'any'},{k:'unit',label:'단위',list:'units',listOpts:['건','식','면','회','연','판','부','(연*도수)']},
+    {k:'unitPrice',label:'단가',type:'number'},{k:'note',label:'비고'},
+  ], it||(dup?Object.assign({},src):{qty:1,unit:'건'}), out => { if(it) Object.assign(it,out); else e.items.push(out); });
+}
+function estMetaForm(p){
+  const e = p.estimate || {title:p.name+' 산출내역서', date:new Date().toISOString().slice(0,10), spec:'', overheadRate:3, profitRate:3, items:[]};
+  openForm('견적서 정보', [
+    {k:'title',label:'제목',full:true},{k:'date',label:'작성일',type:'date'},{k:'spec',label:'사양 (판형/제본/면수/부수)',full:true},
+    {k:'overheadRate',label:'일반관리비 (%)',type:'number',step:'0.1'},{k:'profitRate',label:'이윤 (%)',type:'number',step:'0.1'},
+  ], e, out => { Object.assign(e,out); p.estimate = e; ui.dtab='estimate'; });
+}
+function budgetForm(p, idx, dup){
+  const src = idx!=null ? p.budget[idx] : null; const b = dup ? null : src;
+  const base = b || (dup ? src : null);
+  const vals = base ? Object.assign({}, base, {taxMode: taxLabel(base.unitPrice ? guessTaxMode(base,'planned') : (base.taxMode||'manual'))}) : {taxMode: taxLabel('none')};
+  const form = openForm(dup?'예산 항목 복사':b?'예산 항목 수정':'예산 항목 추가', [
+    {k:'category',label:'항목 (예: 인쇄, 영문번역)',full:true,attr:'required'},
+    {k:'unitPrice',label:'단가 (세전)',type:'number'},{k:'taxMode',label:'세금 처리',type:'select',opts:TAX_MODES.map(x=>x[1])},
+    {k:'planned',label:'예산 금액',type:'number',full:true},{k:'note',label:'비고',full:true},
+  ], vals, out => { out.taxMode = taxCode(out.taxMode); if(out.taxMode!=='manual' && out.unitPrice) out.planned = taxCalc(out.unitPrice, out.taxMode); if(b) Object.assign(b,out); else p.budget.push(out); });
+  attachTaxCalc(form, 'planned', '예산');
+}
+const TAX_MODES = [['none','단가 그대로'],['vat','부가세 10% 추가 (×1.1)'],['wh33','원천징수 3.3% 공제 (×0.967)'],['manual','직접 입력']];
+const taxLabel = c => (TAX_MODES.find(x=>x[0]===c)||TAX_MODES[0])[1];
+const taxCode = l => (TAX_MODES.find(x=>x[1]===l)||TAX_MODES[0])[0];
+const taxCalc = (unit, mode) => mode==='vat' ? Math.round(unit*1.1) : mode==='wh33' ? Math.round(unit*0.967) : unit;
+function guessTaxMode(e, amountKey='amount'){ if(e.taxMode) return e.taxMode; const u=e.unitPrice||0, a=e[amountKey]||0; if(!u) return 'manual'; if(a===taxCalc(u,'vat')) return 'vat'; if(a===taxCalc(u,'wh33')) return 'wh33'; if(a===u) return 'none'; return 'manual'; }
+function expenseForm(p, idx, dup){
+  const src = idx!=null ? p.expenses[idx] : null; const e = dup ? null : src;
+  const cats = [...new Set([...(p.budget||[]).map(b=>b.category), ...(p.expenses||[]).map(x=>x.category)].filter(Boolean))];
+  const base = e || (dup ? src : null);
+  const vals = base ? Object.assign({}, base, {taxMode: taxLabel(guessTaxMode(base))}, dup?{date:new Date().toISOString().slice(0,10)}:{}) : {date:new Date().toISOString().slice(0,10), taxMode: taxLabel('none')};
+  const form = openForm(dup?'지출 복사 (새 항목으로 추가)':e?'지출 수정':'지출 추가', [
+    {k:'date',label:'날짜',type:'date'},{k:'category',label:'분류 (예산 항목과 맞추면 자동 비교)',list:'cats',listOpts:cats},
+    {k:'item',label:'항목 / 내용',full:true,attr:'required'},
+    {k:'unitPrice',label:'단가 (세전)',type:'number'},{k:'taxMode',label:'세금 처리',type:'select',opts:TAX_MODES.map(x=>x[1])},
+    {k:'amount',label:'실제 지급액',type:'number',full:true},
+    {k:'note',label:'비고 (예: 선금 50%)',full:true},
+  ], vals, out => { out.taxMode = taxCode(out.taxMode); if(out.taxMode!=='manual' && out.unitPrice) out.amount = taxCalc(out.unitPrice, out.taxMode); if(e) Object.assign(e,out); else p.expenses.push(out); });
+  attachTaxCalc(form, 'amount', '지급');
+}
+function attachTaxCalc(form, amountField, word){
+  const u = form.querySelector('[name=unitPrice]'), a = form.querySelector(`[name=${amountField}]`), m = form.querySelector('[name=taxMode]');
+  const hint = document.createElement('span'); hint.className='small muted'; hint.style.marginTop='2px'; a.parentElement.appendChild(hint);
+  const recalc = ()=>{ const mode = taxCode(m.value), unit = Number(u.value||0);
+    if(mode!=='manual'){ a.value = unit ? taxCalc(unit, mode) : ''; a.readOnly = true; a.style.opacity = .85; }
+    else { a.readOnly = false; a.style.opacity = 1; }
+    hint.textContent = mode==='vat' ? `단가 ${won(unit)} + 부가세 10% = ${won(taxCalc(unit,'vat'))}원` : mode==='wh33' ? `단가 ${won(unit)} − 3.3% 원천징수 ${won(unit - taxCalc(unit,'wh33'))} = ${won(taxCalc(unit,'wh33'))}원` : mode==='none' ? `단가와 같은 금액을 ${word}` : `${word}액을 직접 입력하세요`; };
+  u.addEventListener('input', recalc); m.addEventListener('change', recalc);
+  a.addEventListener('input', ()=>{ if(taxCode(m.value)!=='manual'){ m.value = taxLabel('manual'); recalc(); } });
+  recalc();
+}
+function paymentForm(p, idx, dup){
+  const src = idx!=null ? p.payments[idx] : null; const e = dup ? null : src;
+  openForm(dup?'입금 복사':e?'입금 수정':'입금 추가', [
+    {k:'date',label:'날짜',type:'date'},{k:'amount',label:'입금액 (부가세 포함)',type:'number'},{k:'note',label:'내용 (예: 선금 50%)',full:true},
+  ], e||(dup?Object.assign({},src,{date:new Date().toISOString().slice(0,10)}):{date:new Date().toISOString().slice(0,10), amount: outstanding(p)}), out => { if(e) Object.assign(e,out); else p.payments.push(out); });
+}
+
+/* ---------- theme ---------- */
+const THEMES=['light','dark','glass','glass-dark'];
+let booted=false;
+function applyTheme(t){ if(!THEMES.includes(t)) t='light'; document.documentElement.dataset.theme = t;
+  const style = t.startsWith('glass')?'glass':'flat', mode = t.endsWith('dark')?'dark':'light';
+  document.querySelectorAll('#styleSeg button').forEach(b=>b.classList.toggle('on', b.dataset.s===style));
+  document.querySelectorAll('#modeSeg button').forEach(b=>b.classList.toggle('on', b.dataset.m===mode));
+  if(booted) render(); }
+function curTheme(){ return document.documentElement.dataset.theme||'light'; }
+const isGlass = () => curTheme().startsWith('glass');
+function setThemeParts(style, mode){ const t = style==='glass' ? (mode==='dark'?'glass-dark':'glass') : mode; applyTheme(t); pref.theme=t; savePref(); }
+(function(){ let t=pref.theme||null; if(!t && !NATIVE){ try{ t = localStorage.getItem(KEY+'-theme'); }catch(e){} } if(!t) t = matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'; applyTheme(t); })();
+document.querySelectorAll('#styleSeg button').forEach(b=>b.onclick = ()=>setThemeParts(b.dataset.s, curTheme().endsWith('dark')?'dark':'light'));
+document.querySelectorAll('#modeSeg button').forEach(b=>b.onclick = ()=>setThemeParts(isGlass()?'glass':'flat', b.dataset.m));
+
+/* ---------- cloud sync (Supabase REST, no SDK) ---------- */
+const DEFAULT_CLOUD = {url:'https://hqehfmcryhmucniqndcn.supabase.co', key:'sb_publishable_Rq7fP21lE9E-mJ5CrbXWZw_LgPrvnWi'};   // 위고디자인 Supabase 프로젝트 (publishable 키는 공개용)
+const sync = { cfg: pref.cloud||null, session: pref.cloudSession||null, lastSync: pref.cloudLastSync||null, dirty:false, pushTimer:null, busy:false, status:'off', msg:'' };
+function syncPersist(){ pref.cloud=sync.cfg; pref.cloudSession=sync.session; pref.cloudLastSync=sync.lastSync; savePref(); }
+function sbUrl(){ return (sync.cfg&&sync.cfg.url||'').trim().replace(/\/+$/,'').replace(/\/(rest|auth|storage)\/v1$/,'').replace(/\/+$/,''); }
+function sbHeaders(auth=true){ const h={'apikey':sync.cfg.key,'Content-Type':'application/json','Accept':'application/json'}; if(auth&&sync.session) h['Authorization']='Bearer '+sync.session.access_token; return h; }
+async function sbAuth(path, body){
+  const r = await fetch(sbUrl()+'/auth/v1/'+path, {method:'POST', headers: sbHeaders(false), body: JSON.stringify(body)});
+  const j = await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error(j.msg||j.error_description||j.error||j.message||('HTTP '+r.status));
+  return j;
+}
+function setSession(j){ if(!j||!j.access_token||!j.user) return false; sync.session={access_token:j.access_token, refresh_token:j.refresh_token, expires_at: Math.floor(Date.now()/1000)+(j.expires_in||3600), user:{id:j.user.id, email:j.user.email}}; syncPersist(); return true; }
+async function ensureToken(force){
+  if(!sync.session) throw new Error('로그인이 필요합니다');
+  if(force || Date.now()/1000 > (sync.session.expires_at||0) - 90){ const j = await sbAuth('token?grant_type=refresh_token', {refresh_token: sync.session.refresh_token}); if(!setSession(j)) throw new Error('세션 갱신 실패'); }
+}
+async function sbRest(method, path, body, extra={}, retry=true){
+  await ensureToken();
+  const r = await fetch(sbUrl()+'/rest/v1/'+path, {method, headers: Object.assign(sbHeaders(), extra), body: body?JSON.stringify(body):undefined});
+  if(r.status===401 && retry){ await ensureToken(true); return sbRest(method, path, body, extra, false); }
+  const txt = await r.text();
+  if(!r.ok){ let m=txt; try{ const j=JSON.parse(txt); m=j.message||j.hint||j.msg||txt; }catch(e){} throw new Error((m||('HTTP '+r.status)).slice(0,200)); }
+  return txt ? JSON.parse(txt) : null;
+}
+async function pullRemote(){ const rows = await sbRest('GET', `pm_data?select=data,updated_at&user_id=eq.${sync.session.user.id}`); return rows && rows[0] || null; }
+async function pushRemote(){
+  if(!state.savedAt) state.savedAt = new Date().toISOString();
+  await sbRest('POST', 'pm_data', [{user_id: sync.session.user.id, data: state, updated_at: state.savedAt}], {'Prefer':'resolution=merge-duplicates,return=minimal'});
+  sync.dirty=false; sync.lastSync=state.savedAt; syncPersist(); setSyncStatus('synced');
+}
+function adoptRemote(r){ state = r.data; if(!state.nextId) state.nextId = Math.max(0,...state.projects.map(p=>p.id))+1; state.savedAt = state.savedAt || r.updated_at; persistLocal(); sync.dirty=false; sync.lastSync=r.updated_at; syncPersist(); if(!$('#modalBg').classList.contains('on')) render(); }
+function schedulePush(){ clearTimeout(sync.pushTimer); setSyncStatus('pending'); sync.pushTimer=setTimeout(()=>syncTick(), 1500); }
+async function syncTick(manual){
+  if(!sync.session || !sync.cfg) return;
+  if(sync.busy){ if(manual) return; sync.pushTimer=setTimeout(()=>syncTick(),2000); return; }
+  if(!navigator.onLine){ setSyncStatus('offline'); return; }
+  sync.busy=true;
+  try{
+    const r = await pullRemote();
+    if(r && r.updated_at > (state.savedAt||'') && !$('#modalBg').classList.contains('on')){ adoptRemote(r); }
+    else if(sync.dirty || !r || (r.updated_at < (state.savedAt||'')) ){ await pushRemote(); }
+    else setSyncStatus('synced');
+  }catch(e){ setSyncStatus('error', e.message); }
+  finally{ sync.busy=false; }
+}
+function setSyncStatus(s, msg){ sync.status=s; sync.msg=msg||''; const el=$('#syncMsg'), dot=$('#cloudDot');
+  const tm = sync.lastSync ? new Date(sync.lastSync).toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) : '';
+  const text = s==='synced'?`☁ 동기화됨 ${tm}`:s==='pending'?'☁ 동기화 대기 중…':s==='offline'?`☁ 오프라인 · 연결되면 동기화`:s==='error'?`☁ 오류: ${msg}`:'☁ 클라우드 미연결';
+  if(el) el.textContent = text; if(dot){ dot.textContent = s==='synced'?'●':s==='error'?'!':s==='off'?'':'…'; dot.style.color = s==='synced'?'var(--good)':s==='error'?'var(--crit)':'var(--muted)'; } }
+async function cloudLogin(email, password, signup){
+  const j = await sbAuth(signup ? 'signup' : 'token?grant_type=password', {email, password});
+  if(!setSession(j)){ if(signup) throw new Error('가입은 되었지만 이메일 확인이 필요합니다. 메일의 확인 링크를 누른 뒤 로그인하세요. (Supabase Auth 설정에서 "Confirm email"을 끄면 바로 로그인됩니다)'); throw new Error('로그인 응답에 세션이 없습니다'); }
+  const r = await pullRemote();
+  if(!r){ await pushRemote(); return '이 기기의 데이터를 클라우드에 올렸습니다.'; }
+  if(r.updated_at > (state.savedAt||'')){
+    if(!state.savedAt || confirm(`클라우드에 ${new Date(r.updated_at).toLocaleString('ko-KR')} 저장된 데이터가 있습니다.\n이 기기의 데이터를 클라우드 데이터로 교체할까요?\n\n취소: 이 기기의 데이터를 클라우드에 올립니다 (클라우드 데이터는 덮어씌워집니다).`)){ adoptRemote(r); return '클라우드 데이터를 가져왔습니다.'; }
+  }
+  await pushRemote(); return '이 기기의 데이터를 클라우드에 올렸습니다.';
+}
+function cloudModal(){
+  const bg=$('#modalBg'), m=$('#modal'); const cfg=sync.cfg||DEFAULT_CLOUD;
+  const connected = !!sync.session;
+  m.innerHTML = `<h2>☁ 클라우드 동기화</h2>
+    <div class="small muted" style="margin:-8px 0 12px">맥 앱 · 휴대폰 웹앱 · 브라우저 어디서 입력해도 같은 데이터를 봅니다. Supabase(무료)에 저장됩니다.</div>
+    ${connected ? `
+      <div class="card" style="padding:12px 14px;margin-bottom:12px"><b>연결됨</b> · ${esc(sync.session.user.email)}<div class="small muted" id="cmStatus">${esc($('#syncMsg').textContent)}</div></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="cmSync">지금 동기화</button><button class="btn" id="cmLogout">로그아웃</button><button class="btn danger" id="cmReset">연동 해제</button></div>
+      <div class="small muted" style="margin-top:12px">서버: ${esc(cfg.url)}</div>`
+    : `
+      <div class="form">
+        <label class="full">Supabase 프로젝트 URL<input type="text" id="cmUrl" placeholder="https://xxxx.supabase.co" value="${esc(cfg.url)}"></label>
+        <label class="full">anon public 키<input type="text" id="cmKey" placeholder="eyJ..." value="${esc(cfg.key)}"></label>
+        <label>이메일<input type="text" id="cmEmail" autocomplete="username" placeholder="you@example.com"></label>
+        <label>비밀번호 (6자 이상)<input type="password" id="cmPw" autocomplete="current-password"></label>
+      </div>
+      <div class="small muted" style="margin-top:8px">서버 주소와 키는 위고디자인 프로젝트로 미리 채워져 있습니다. 처음이면 "회원가입", 다른 기기에서 가입했으면 "로그인".</div>
+      <div id="cmErr" class="small" style="color:var(--crit);margin-top:8px"></div>
+      <div class="actions"><button class="btn" id="mcancel">닫기</button><button class="btn" id="cmSignup">회원가입</button><button class="btn primary" id="cmLogin">로그인</button></div>`}
+    ${connected?'<div class="actions"><button class="btn" id="mcancel">닫기</button></div>':''}`;
+  bg.classList.add('on');
+  $('#mcancel').onclick = closeModal;
+  if(connected){
+    $('#cmSync').onclick = async ()=>{ $('#cmSync').textContent='동기화 중…'; sync.dirty = sync.dirty || false; await syncTick(true); $('#cmStatus').textContent=$('#syncMsg').textContent; $('#cmSync').textContent='지금 동기화'; };
+    $('#cmLogout').onclick = ()=>{ sync.session=null; syncPersist(); setSyncStatus('off'); cloudModal(); };
+    $('#cmReset').onclick = ()=>{ if(confirm('이 기기의 클라우드 설정(서버·로그인)을 지웁니다. 데이터는 지워지지 않습니다.')){ sync.session=null; sync.cfg=null; sync.lastSync=null; syncPersist(); setSyncStatus('off'); cloudModal(); } };
+  } else {
+    const go = async (signup)=>{ const url=$('#cmUrl').value.trim(), key=$('#cmKey').value.trim(), email=$('#cmEmail').value.trim(), pw=$('#cmPw').value;
+      const err=$('#cmErr'); err.textContent='';
+      if(!/^https?:\/\//.test(url) || !key){ err.textContent='Supabase URL과 anon 키를 입력하세요.'; return; }
+      if(!email || pw.length<6){ err.textContent='이메일과 6자 이상 비밀번호를 입력하세요.'; return; }
+      sync.cfg={url,key}; syncPersist();
+      const b=signup?$('#cmSignup'):$('#cmLogin'); const old=b.textContent; b.textContent='연결 중…'; b.disabled=true;
+      try{ const msg = await cloudLogin(email, pw, signup); setSyncStatus('synced'); cloudModal(); const st=$('#cmStatus'); if(st) st.textContent = msg + ' · ' + $('#syncMsg').textContent; }
+      catch(e){ err.textContent = '실패: ' + e.message; b.textContent=old; b.disabled=false; } };
+    $('#cmLogin').onclick=()=>go(false); $('#cmSignup').onclick=()=>go(true);
+    $('#cmPw').addEventListener('keydown', e=>{ if(e.key==='Enter') go(false); });
+  }
+}
+$('#btnCloud').onclick = cloudModal; $('#syncMsg').onclick = cloudModal;
+setInterval(()=>syncTick(), 30000);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') syncTick(); });
+window.addEventListener('online', ()=>syncTick());
+if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+
+/* ---------- events ---------- */
+document.querySelectorAll('.nav[data-nav]').forEach(b=>b.addEventListener('click', ()=>{ const n=b.dataset.nav; if(n==='unpaid'){ ui.tab='list'; ui.mode='unpaid'; } else { ui.tab=n; if(n==='list') ui.mode=''; } render(); }));
+$('#btnExport').onclick = ()=>{ download(`프로젝트관리_백업_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(state,null,1), 'application/json'); };
+$('#btnImport').onclick = ()=>$('#fileIn').click();
+if(NATIVE){ const b=$('#btnReveal'); b.style.display=''; b.onclick=()=>nativePost({type:'reveal'}); }
+$('#fileIn').addEventListener('change', e=>{ const f=e.target.files[0]; if(!f) return; const rd=new FileReader(); rd.onload=()=>{ try{ const d=JSON.parse(rd.result); if(!d||!Array.isArray(d.projects)) throw 0; if(confirm(`백업 파일의 프로젝트 ${d.projects.length}건으로 현재 데이터를 교체할까요?`)){ state=d; state.nextId = state.nextId || Math.max(0,...state.projects.map(p=>p.id))+1; ui.detailId=null; ui.tab='dash'; save(); render(); } }catch(err){ alert('올바른 백업 파일이 아닙니다'); } e.target.value=''; }; rd.readAsText(f); });
+$('#btnCsv').onclick = ()=>{ const rows=[['연도','월','일','품명','거래처','금액','부가세','합계','지급여부','입금','미수','지출','비고']];
+  filtered().sort((a,b)=>dateKey(a)-dateKey(b)).forEach(p=>rows.push([p.year,p.month,p.day,p.name,p.client,p.amount,p.vat,total(p),p.status,received(p),outstanding(p),expSum(p),p.note]));
+  download(`프로젝트목록_${ui.year==='all'?'전체':ui.year}.csv`, toCsv(rows), 'text/csv'); };
+function toCsv(rows){ return '﻿'+rows.map(r=>r.map(c=>{ c=String(c??''); return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c; }).join(',')).join('\r\n'); }
+function download(name, content, type){ if(NATIVE){ nativePost({type:'download', name, content}); return; } const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([content],{type:type+';charset=utf-8'})); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
+
+$('#app').addEventListener('input', e=>{ if(e.target.id==='q'){ ui.q=e.target.value; const pos=e.target.selectionStart; render(); const q=$('#q'); q.focus(); q.setSelectionRange(pos,pos); } });
+$('#app').addEventListener('change', e=>{ if(e.target.id==='statusSel'){ ui.status=e.target.value; render(); } if(e.target.id==='yearSel'){ ui.year=e.target.value; render(); } });
+$('#app').addEventListener('click', e=>{
+  if(e.target.closest('#btnNew')){ projectForm(null); return; }
+  const el = e.target.closest('[data-act]'); if(!el) return;
+  const act = el.dataset.act; const id = Number(el.dataset.id); const i = el.dataset.i!=null ? Number(el.dataset.i) : null;
+  const p = state.projects.find(x=>x.id===(ui.tab==='detail'?ui.detailId:id));
+  const pr = state.projects.find(x=>x.id===id);
+  switch(act){
+    case 'sort': ui.sort = ui.sort.key===el.dataset.key ? {key:el.dataset.key, dir:-ui.sort.dir} : {key:el.dataset.key, dir: ['name','client','status'].includes(el.dataset.key)?1:-1}; render(); break;
+    case 'goList': ui.tab='list'; ui.mode=''; ui.status=el.dataset.status||''; render(); window.scrollTo(0,0); break;
+    case 'goStatus': ui.tab='list'; ui.mode=''; ui.status=el.dataset.status||''; ui.sort={key:'date',dir:-1}; render(); window.scrollTo(0,0); break;
+    case 'goUnpaid': ui.tab='list'; ui.mode='unpaid'; ui.status=''; render(); window.scrollTo(0,0); break;
+    case 'goMode': ui.tab='list'; ui.mode=el.dataset.mode||''; ui.status=''; if(ui.mode==='expense') ui.sort={key:'exp',dir:-1}; else if(ui.tab!=='list') ui.sort={key:'date',dir:-1}; render(); window.scrollTo(0,0); break;
+    case 'open': ui.detailId=id; ui.tab='detail'; ui.dtab='summary'; render(); window.scrollTo(0,0); break;
+    case 'back': ui.tab='list'; render(); break;
+    case 'print': if(NATIVE) nativePost({type:'print'}); else window.print(); break;
+    case 'dtab': ui.dtab=el.dataset.k; render(); break;
+    case 'statusPop': e.stopPropagation(); statusPopover(el, pr); break;
+    case 'noop': e.stopPropagation(); break;
+    case 'resetCols': delete pref.colW; savePref(); render(); break;
+    case 'edit': e.stopPropagation(); projectForm(pr); break;
+    case 'dup': e.stopPropagation(); projectForm(pr, true); break;
+    case 'expSort': ui.expSort=el.dataset.k; render(); break;
+    case 'expGroupToggle': ui.expGroup=!ui.expGroup; render(); break;
+    case 'estItemDup': estItemForm(p,i,true); break;
+    case 'budDup': budgetForm(p,i,true); break;
+    case 'expDup': expenseForm(p,i,true); break;
+    case 'payDup': paymentForm(p,i,true); break;
+    case 'del': e.stopPropagation(); if(confirm(`'${pr.name}' 프로젝트를 삭제할까요? (견적·지출 기록도 함께 삭제됩니다)`)){ state.projects = state.projects.filter(x=>x!==pr); if(ui.detailId===id){ui.detailId=null; ui.tab='list';} save(); render(); } break;
+    case 'estNew': case 'estMeta': estMetaForm(p); break;
+    case 'estItemNew': estItemForm(p,null); break;
+    case 'estItemEdit': estItemForm(p,i); break;
+    case 'estItemDel': p.estimate.items.splice(i,1); save(); render(); break;
+    case 'estApply': { const c=estCalc(p.estimate); const amt = Math.round(c.trunc/1.1); if(confirm(`금액(공급가)을 ${won(amt)}원, 부가세를 ${won(c.trunc-amt)}원으로 설정할까요?`)){ p.amount=amt; p.vat=c.trunc-amt; save(); render(); } } break;
+    case 'estCsv': { const e2=p.estimate, c=estCalc(e2); const rows=[['구분','항목','수량','단위','단가','금액','비고']]; e2.items.forEach(it=>rows.push([it.group,it.name,it.qty,it.unit,it.unitPrice,(it.qty||0)*(it.unitPrice||0),it.note])); rows.push(['','소계','','','',c.sub,''],['','일반관리비','','','',c.oh,''],['','이윤','','','',c.pf,''],['','부가세','','','',c.vat,''],['','합계','','','',c.tot,'']); download(`견적서_${p.name}.csv`,toCsv(rows),'text/csv'); } break;
+    case 'budNew': budgetForm(p,null); break;
+    case 'budEdit': budgetForm(p,i); break;
+    case 'budDel': p.budget.splice(i,1); save(); render(); break;
+    case 'expNew': expenseForm(p,null); break;
+    case 'expEdit': expenseForm(p,i); break;
+    case 'expDel': if(confirm('이 지출 기록을 삭제할까요?')){ p.expenses.splice(i,1); save(); render(); } break;
+    case 'expCsv': { const rows=[['날짜','항목','분류','단가','금액','비고']]; p.expenses.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(x=>rows.push([x.date,x.item,x.category,x.unitPrice,x.amount,x.note])); rows.push(['','합계','','',expSum(p),'']); download(`지출내역_${p.name}.csv`,toCsv(rows),'text/csv'); } break;
+    case 'payNew': paymentForm(p,null); break;
+    case 'payEdit': paymentForm(p,i); break;
+    case 'payDel': p.payments.splice(i,1); save(); render(); break;
+  }
+});
+let rz=null;
+$('#app').addEventListener('mousedown', e=>{
+  const h=e.target.closest('.rs'); if(!h) return;
+  e.preventDefault(); e.stopPropagation();
+  const table=h.closest('table'); const col=table.querySelector(`col[data-col="${h.dataset.col}"]`);
+  rz={x:e.clientX, key:h.dataset.col, col, w:parseFloat(col.style.width)||100, table, tw:parseFloat(table.style.width)||table.offsetWidth, h};
+  h.classList.add('on'); document.body.classList.add('resizing');
+});
+document.addEventListener('mousemove', e=>{ if(!rz) return; const w=Math.max(56, Math.round(rz.w + (e.clientX-rz.x))); rz.col.style.width=w+'px'; rz.table.style.width=(rz.tw + (w-rz.w))+'px'; });
+document.addEventListener('mouseup', ()=>{ if(!rz) return; pref.colW=pref.colW||{}; pref.colW[rz.key]=parseFloat(rz.col.style.width); savePref(); rz.h.classList.remove('on'); document.body.classList.remove('resizing'); const had=!!rz; rz=null; if(had && !document.querySelector('[data-act=resetCols]')) render(); });
+window.addEventListener('beforeunload', ()=>{ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} });
+render(); booted=true; setSyncStatus(sync.session?'pending':'off'); if(sync.session) setTimeout(()=>syncTick(), 800);
+if(state.savedAt) document.getElementById('saveMsg').textContent = '마지막 저장 ' + new Date(state.savedAt).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+else if(NATIVE) document.getElementById('saveMsg').textContent = '입력하면 앱 데이터 폴더에 자동 저장됩니다';
+</script>
+</body>
+</html>
