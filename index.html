@@ -237,6 +237,12 @@ body.resizing{cursor:col-resize;user-select:none}
 .list-row .av{width:36px;height:36px;border-radius:11px;background:var(--tile1);display:grid;place-items:center;color:var(--accent);font-weight:700;font-size:13px;flex:none}
 .list-row .t{flex:1;min-width:0}.list-row .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.list-row .t span{font-size:12px;color:var(--muted)}
 .list-row .amt{font-weight:700;white-space:nowrap}
+.mrow{align-items:flex-start;padding:11px 0}
+.mrow .t b{white-space:normal;line-height:1.3}
+.mrow-amts{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-top:4px}
+.mrow-amts b{color:var(--text);font-weight:600}.mrow-amts .neg b{color:var(--crit)}.mrow-amts .pos b{color:var(--good)}
+.mrow-side{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex:none}
+.mrow-side .btns{display:flex;gap:4px}
 @media (max-width:820px){.layout{flex-direction:column}.side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--card-border);padding:10px}.side .sec,.logo span{display:none}.nav{width:auto;padding:8px 10px}.side .bottom{margin-top:0;flex-direction:row;margin-left:auto}.main{padding:16px}}
 .mnav{display:none}
 @media (max-width:600px){
@@ -259,7 +265,7 @@ body.resizing{cursor:col-resize;user-select:none}
   .side .sec,.side .bottom .status-msg{display:none}
   .side #btnExport,.side #btnImport,.side #btnCsv,.side #btnReveal{font-size:0;gap:0;padding:7px 8px}.side #btnExport svg,.side #btnImport svg,.side #btnCsv svg,.side #btnReveal svg{width:18px;height:18px}
   .side .bottom{width:auto;flex:1;margin-left:0;gap:4px;flex-direction:row}.side .bottom .seg{flex:1}.side .seg button{padding:4px 2px;font-size:11px}
-  .toolbar .small.muted,.toolbar .spacer{display:none}
+  .toolbar .small.muted,.toolbar .spacer,[data-act="resetCols"]{display:none}
   .card{overflow-x:auto}.card table{min-width:560px}
   .donut-wrap{flex-direction:column;align-items:stretch}
   .sub-tabs{width:100%}.sub-tabs button{padding:7px 10px;font-size:13px}
@@ -384,6 +390,16 @@ function estCalc(e){
 }
 function years(){ return [...new Set(state.projects.map(p=>p.year).filter(Boolean))].sort((a,b)=>b-a); }
 function filtered(){ return state.projects.filter(p => (ui.year==='all' || String(p.year)===ui.year)); }
+const MOBILE = () => window.matchMedia('(max-width:600px)').matches;
+function mobileRow(p, extra){
+  const o = isPayout(p) ? unpaidOut(p) : outstanding(p);
+  return `<div class="list-row mrow" data-act="open" data-id="${p.id}">
+    <div class="av">${esc((p.client||p.name).slice(0,1))}</div>
+    <div class="t"><b>${esc(p.name)}${kindTag(p)}</b><span>${dateStr(p)} · ${esc(p.client||'거래처 미지정')}</span>
+      <div class="mrow-amts"><span>합계 <b>${isPayout(p)?'−':''}${won(total(p))}</b></span>${o?`<span class="${isPayout(p)?'':'neg'}" ${isPayout(p)?'style="color:var(--warn)"':''}>${isPayout(p)?'미지급':'미수'} <b>${won(o)}</b></span>`:''}${expSum(p)?`<span>지출 <b>${won(expSum(p))}</b></span>`:''}<span class="${profitOf(p)<0?'neg':'pos'}">이익 <b>${wonS(profitOf(p))}</b></span></div>
+    </div>
+    <div class="mrow-side">${badge(p.status, p.id)}${extra||''}</div></div>`;
+}
 const kindTag = p => isPayout(p) ? ` <span class="badge" style="background:${hexA(statusColor('지급'),.16)};color:${statusColor('지급')};padding:1px 7px;font-size:11px">지급</span>` : '';
 function badge(s, id){ const c=statusColor(s), st=`style="background:${hexA(c,.16)};color:${c}"`; return id!=null ? `<span class="badge editable" ${st} data-act="statusPop" data-id="${id}" title="클릭해서 지급 여부 변경"><i></i>${esc(s)}<em>▾</em></span>` : `<span class="badge" ${st}><i></i>${esc(s)}</span>`; }
 function delta(cur, prev, suffix=''){
@@ -470,7 +486,7 @@ function renderDash(){
     </div>
   </div>
   <div class="card"><div class="ch"><span class="ic" style="background:var(--tile3);color:var(--crit)">${ICONS.alert}</span><h3>미수금 현황</h3><span class="small muted">행을 클릭하면 상세로 이동</span><button class="btn sm ghost" data-act="goUnpaid">미수금 목록</button></div>
-    ${unpaid.length? `<div style="max-height:380px;overflow:auto"><table><thead><tr><th>날짜</th><th>품명</th><th>거래처</th><th>상태</th><th class="num">합계</th><th class="num">입금</th><th class="num">미수</th></tr></thead><tbody>
+    ${unpaid.length && MOBILE() ? `<div>${unpaid.map(p=>mobileRow(p)).join('')}<div class="small muted" style="padding:10px 0 0;text-align:right">미수금 합계 <b class="neg">${won(out)}</b></div></div>` : unpaid.length? `<div style="max-height:380px;overflow:auto"><table><thead><tr><th>날짜</th><th>품명</th><th>거래처</th><th>상태</th><th class="num">합계</th><th class="num">입금</th><th class="num">미수</th></tr></thead><tbody>
     ${unpaid.map(p=>`<tr class="click" data-act="open" data-id="${p.id}"><td style="white-space:nowrap">${dateStr(p)}</td><td><b>${esc(p.name)}</b></td><td class="small">${esc(p.client)}</td><td>${badge(p.status, p.id)}</td><td class="num">${won(total(p))}</td><td class="num muted">${won(received(p))}</td><td class="num neg"><b>${won(outstanding(p))}</b></td></tr>`).join('')}
     </tbody><tfoot><tr><td colspan="6">미수금 합계</td><td class="num neg">${won(out)}</td></tr></tfoot></table></div>` : '<div class="empty">미수금이 없습니다 🎉</div>'}
   </div>`;
@@ -574,6 +590,8 @@ function renderList(){
     <span class="small muted">지급 여부 배지를 클릭하면 바로 바꿀 수 있고, 열 머리글 경계를 끌어 너비를 조절할 수 있습니다</span>
     ${pref.colW?'<button class="btn sm ghost" data-act="resetCols">열 너비 초기화</button>':''}
   </div>
+  ${MOBILE() ? `<div>${ps.map(p=>mobileRow(p, `<div class="btns"><button class="btn sm" data-act="edit" data-id="${p.id}">수정</button><button class="btn sm" data-act="dup" data-id="${p.id}">복사</button><button class="btn sm danger" data-act="del" data-id="${p.id}">삭제</button></div>`)).join('')||'<div class="empty">프로젝트가 없습니다</div>'}
+    <div class="mini3" style="margin-top:12px"><div><span>합계(지급 차감)</span><b>${wonS(sumT)}</b></div><div><span style="color:var(--crit)">미수</span><b>${sumO?won(sumO):'-'}</b></div><div><span>영업이익</span><b class="${sumP<0?'neg':''}">${wonS(sumP)}</b></div></div></div>` : `
   <div class="tablewrap"><table id="listTable" class="list" style="width:${totalW}px">
     <colgroup>${COLS.map(c=>`<col data-col="${c[0]}" style="width:${cw(c[0])}px">`).join('')}</colgroup>
     <thead><tr>${th('date','날짜')}${th('name','품명')}${th('client','거래처 / 담당')}${th('amount','금액','num')}${th('vat','부가세','num',false)}${th('total','합계','num')}${th('status','지급 여부')}${th('out','미수','num')}${th('exp','지출','num')}${th('profit','영업이익','num')}${th('note','비고','',false)}${th('act','','',false)}</tr></thead>
@@ -585,7 +603,7 @@ function renderList(){
       <td class="small muted" title="${esc(p.note)}">${esc(p.note)}</td>
       <td><button class="btn sm" data-act="edit" data-id="${p.id}">수정</button> <button class="btn sm" data-act="dup" data-id="${p.id}" title="이 프로젝트를 바탕으로 새 프로젝트 만들기">복사</button> <button class="btn sm danger" data-act="del" data-id="${p.id}">삭제</button></td></tr>`; }).join('') || '<tr><td colspan="12" class="empty">프로젝트가 없습니다</td></tr>'}</tbody>
     <tfoot><tr><td colspan="3">계 <span class="small muted">(지급 건은 차감)</span></td><td class="num">${wonS(sumA)}</td><td class="num">${wonS(sumV)}</td><td class="num">${wonS(sumT)}</td><td></td><td class="num neg">${sumO?won(sumO):'-'}</td><td class="num">${sumE?won(sumE):'-'}</td><td class="num ${sumP<0?'neg':'pos'}">${wonS(sumP)}</td><td colspan="2"></td></tr></tfoot>
-  </table></div></div>`;
+  </table></div>`}</div>`;
 }
 
 function renderDetail(){
@@ -950,6 +968,7 @@ $('#btnCloud').onclick = cloudModal; $('#syncMsg').onclick = cloudModal;
 setInterval(()=>syncTick(), 30000);
 document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='visible') syncTick(); });
 window.addEventListener('online', ()=>syncTick());
+let _rzT=null, _wasMobile=MOBILE(); window.addEventListener('resize', ()=>{ clearTimeout(_rzT); _rzT=setTimeout(()=>{ if(MOBILE()!==_wasMobile){ _wasMobile=MOBILE(); if(!$('#modalBg').classList.contains('on')) render(); } },200); });
 if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
 /* ---------- events ---------- */
