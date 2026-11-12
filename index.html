@@ -238,6 +238,10 @@ body.resizing{cursor:col-resize;user-select:none}
 .list-row .t{flex:1;min-width:0}.list-row .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.list-row .t span{font-size:12px;color:var(--muted)}
 .list-row .amt{font-weight:700;white-space:nowrap}
 .mrow{align-items:flex-start;padding:11px 0}
+.chk{width:22px;height:22px;border-radius:7px;border:2px solid var(--muted);display:grid;place-items:center;font-size:13px;color:#fff;flex:none;margin-top:6px;cursor:pointer}
+.chk.on{background:var(--accent);border-color:var(--accent)}
+tr.selected td,.mrow.selected{background:var(--surface2)}
+.selbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 12px;border-radius:12px;background:var(--surface2);margin-bottom:10px}
 .mrow .t b{white-space:normal;line-height:1.3}
 .mrow-amts{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--muted);margin-top:4px}
 .mrow-amts b{color:var(--text);font-weight:600}.mrow-amts .neg b{color:var(--crit)}.mrow-amts .pos b{color:var(--good)}
@@ -348,7 +352,7 @@ let state = load();
 let pref = loadPref();
 function loadPref(){ if(NATIVE) return Object.assign({}, window.__NATIVE_PREF__||{}); try{ return JSON.parse(localStorage.getItem(KEY+'-pref')||'{}')||{}; }catch(e){ return {}; } }
 function savePref(){ if(NATIVE) nativePost({type:'pref', data: JSON.stringify(pref)}); else { try{ localStorage.setItem(KEY+'-pref', JSON.stringify(pref)); }catch(e){} } }
-let ui = {tab:'dash', year: String(new Date().getFullYear()), q:'', status:'', mode:'', sort:{key:'date',dir:-1}, detailId:null, dtab:'summary', expSort:'date-desc', expGroup:false};
+let ui = {tab:'dash', year: String(new Date().getFullYear()), q:'', status:'', mode:'', sort:{key:'date',dir:-1}, detailId:null, dtab:'summary', expSort:'date-desc', expGroup:false, selMode:false, sel:new Set()};
 
 function load(){
   if(NATIVE){ const d = window.__NATIVE_DATA__; if(d && Array.isArray(d.projects)) return d; return JSON.parse(JSON.stringify(SEED)); }
@@ -393,8 +397,9 @@ function filtered(){ return state.projects.filter(p => (ui.year==='all' || Strin
 const MOBILE = () => window.matchMedia('(max-width:600px)').matches;
 function mobileRow(p, extra){
   const o = isPayout(p) ? unpaidOut(p) : outstanding(p);
-  return `<div class="list-row mrow" data-act="open" data-id="${p.id}">
-    <div class="av">${esc((p.client||p.name).slice(0,1))}</div>
+  const selOn = ui.selMode;
+  return `<div class="list-row mrow ${selOn&&ui.sel.has(p.id)?'selected':''}" data-act="${selOn?'selToggle':'open'}" data-id="${p.id}">
+    ${selOn?`<div class="chk ${ui.sel.has(p.id)?'on':''}">${ui.sel.has(p.id)?'✓':''}</div>`:`<div class="av">${esc((p.client||p.name).slice(0,1))}</div>`}
     <div class="t"><b>${esc(p.name)}${kindTag(p)}</b><span>${dateStr(p)} · ${esc(p.client||'거래처 미지정')}</span>
       <div class="mrow-amts"><span>합계 <b>${isPayout(p)?'−':''}${won(total(p))}</b></span>${o?`<span class="${isPayout(p)?'':'neg'}" ${isPayout(p)?'style="color:var(--warn)"':''}>${isPayout(p)?'미지급':'미수'} <b>${won(o)}</b></span>`:''}${expSum(p)?`<span>지출 <b>${won(expSum(p))}</b></span>`:''}<span class="${profitOf(p)<0?'neg':'pos'}">이익 <b>${wonS(profitOf(p))}</b></span></div>
     </div>
@@ -586,23 +591,25 @@ function renderList(){
     <label class="pill">${ICONS.search}<input type="search" id="q" placeholder="품명 · 거래처 · 비고 검색" value="${esc(ui.q)}"></label>
     <label class="pill"><select id="statusSel"><option value="">모든 상태</option>${STATUSES.map(s=>`<option ${ui.status===s?'selected':''}>${s}</option>`).join('')}</select></label>
     <div class="seg" style="width:auto">${[['','전체'],['unpaid','미수만'],['ongoing','진행 중만'],['expense','지출 기록']].map(([m,l])=>`<button class="${ui.mode===m?'on':''}" data-act="goMode" data-mode="${m}" style="padding:6px 12px">${l}</button>`).join('')}</div>
+    <button class="btn ${ui.selMode?'primary':''}" data-act="selMode">${ui.selMode?'선택 취소':'선택'}</button>
     <span class="spacer" style="flex:1"></span>
     <span class="small muted">지급 여부 배지를 클릭하면 바로 바꿀 수 있고, 열 머리글 경계를 끌어 너비를 조절할 수 있습니다</span>
     ${pref.colW?'<button class="btn sm ghost" data-act="resetCols">열 너비 초기화</button>':''}
   </div>
-  ${MOBILE() ? `<div>${ps.map(p=>mobileRow(p, `<div class="btns"><button class="btn sm" data-act="edit" data-id="${p.id}">수정</button><button class="btn sm" data-act="dup" data-id="${p.id}">복사</button><button class="btn sm danger" data-act="del" data-id="${p.id}">삭제</button></div>`)).join('')||'<div class="empty">프로젝트가 없습니다</div>'}
+  ${MOBILE() ? `<div>${ui.selMode?`<div class="selbar"><b>${ui.sel.size}개 선택</b><button class="btn sm" data-act="selAll">전체</button><button class="btn sm" data-act="selNone">해제</button><span class="spacer" style="flex:1"></span><button class="btn sm danger" data-act="selDelete" ${ui.sel.size?'':'disabled'}>선택 삭제 (${ui.sel.size})</button></div>`:''}${ps.map(p=>mobileRow(p, `<div class="btns"><button class="btn sm" data-act="edit" data-id="${p.id}">수정</button><button class="btn sm" data-act="dup" data-id="${p.id}">복사</button><button class="btn sm danger" data-act="del" data-id="${p.id}">삭제</button></div>`)).join('')||'<div class="empty">프로젝트가 없습니다</div>'}
     <div class="mini3" style="margin-top:12px"><div><span>합계(지급 차감)</span><b>${wonS(sumT)}</b></div><div><span style="color:var(--crit)">미수</span><b>${sumO?won(sumO):'-'}</b></div><div><span>영업이익</span><b class="${sumP<0?'neg':''}">${wonS(sumP)}</b></div></div></div>` : `
-  <div class="tablewrap"><table id="listTable" class="list" style="width:${totalW}px">
-    <colgroup>${COLS.map(c=>`<col data-col="${c[0]}" style="width:${cw(c[0])}px">`).join('')}</colgroup>
-    <thead><tr>${th('date','날짜')}${th('name','품명')}${th('client','거래처 / 담당')}${th('amount','금액','num')}${th('vat','부가세','num',false)}${th('total','합계','num')}${th('status','지급 여부')}${th('out','미수','num')}${th('exp','지출','num')}${th('profit','영업이익','num')}${th('note','비고','',false)}${th('act','','',false)}</tr></thead>
-    <tbody>${ps.map(p=>{ const pf=profit(p); return `<tr class="click" data-act="open" data-id="${p.id}">
-      <td>${dateStr(p)}</td><td title="${esc(p.name)}"><b>${esc(p.name)}</b>${kindTag(p)}${p.estimate||p.budget.length||p.expenses.length?' <span class="muted small">📎</span>':''}</td><td class="small" title="${esc(p.client)}">${esc(p.client)}</td>
+  ${ui.selMode?`<div class="selbar"><b>${ui.sel.size}개 선택</b><button class="btn sm" data-act="selAll">보이는 ${ps.length}건 전체 선택</button><button class="btn sm" data-act="selNone">선택 해제</button><span class="spacer" style="flex:1"></span><button class="btn sm danger" data-act="selDelete" ${ui.sel.size?'':'disabled'}>선택 삭제 (${ui.sel.size})</button></div>`:''}
+  <div class="tablewrap"><table id="listTable" class="list" style="width:${totalW+(ui.selMode?40:0)}px">
+    <colgroup>${ui.selMode?'<col style="width:40px">':''}${COLS.map(c=>`<col data-col="${c[0]}" style="width:${cw(c[0])}px">`).join('')}</colgroup>
+    <thead><tr>${ui.selMode?'<th><i class="chk" data-act="selAll" style="width:18px;height:18px;margin:0;font-size:11px"></i></th>':''}${th('date','날짜')}${th('name','품명')}${th('client','거래처 / 담당')}${th('amount','금액','num')}${th('vat','부가세','num',false)}${th('total','합계','num')}${th('status','지급 여부')}${th('out','미수','num')}${th('exp','지출','num')}${th('profit','영업이익','num')}${th('note','비고','',false)}${th('act','','',false)}</tr></thead>
+    <tbody>${ps.map(p=>{ const pf=profit(p); return `<tr class="click ${ui.selMode&&ui.sel.has(p.id)?'selected':''}" data-act="${ui.selMode?'selToggle':'open'}" data-id="${p.id}">
+      ${ui.selMode?`<td><div class="chk ${ui.sel.has(p.id)?'on':''}" style="margin:0;width:18px;height:18px;font-size:11px;border-radius:5px">${ui.sel.has(p.id)?'✓':''}</div></td>`:''}<td>${dateStr(p)}</td><td title="${esc(p.name)}"><b>${esc(p.name)}</b>${kindTag(p)}${p.estimate||p.budget.length||p.expenses.length?' <span class="muted small">📎</span>':''}</td><td class="small" title="${esc(p.client)}">${esc(p.client)}</td>
       <td class="num ${isPayout(p)?'neg':''}">${isPayout(p)?'−':''}${wonS(p.amount)}</td><td class="num muted">${isPayout(p)?'−':''}${wonS(p.vat)}</td><td class="num ${isPayout(p)?'neg':''}"><b>${isPayout(p)?'−':''}${wonS(total(p))}</b></td><td>${badge(p.status, p.id)}</td>
       <td class="num ${isPayout(p)?(unpaidOut(p)?'':'muted'):(outstanding(p)?'neg':'muted')}" ${isPayout(p)?'style="color:var(--warn)" title="지급 건: 아직 지급하지 않은 금액"':''}>${isPayout(p)?(unpaidOut(p)?'미지급 '+won(unpaidOut(p)):'-'):(outstanding(p)?won(outstanding(p)):'-')}</td><td class="num muted">${expSum(p)?won(expSum(p)):'-'}</td>
       <td class="num ${pf<0?'neg':'pos'}" title="${isPayout(p)?'지급 건: −지급액 (금액과 지출 중 큰 값)':expSum(p)?'금액(공급가) − 지출 '+won(expSum(p)):'지출 기록 없음 · 금액(공급가) 전체'}">${wonS(pf)}</td>
       <td class="small muted" title="${esc(p.note)}">${esc(p.note)}</td>
       <td><button class="btn sm" data-act="edit" data-id="${p.id}">수정</button> <button class="btn sm" data-act="dup" data-id="${p.id}" title="이 프로젝트를 바탕으로 새 프로젝트 만들기">복사</button> <button class="btn sm danger" data-act="del" data-id="${p.id}">삭제</button></td></tr>`; }).join('') || '<tr><td colspan="12" class="empty">프로젝트가 없습니다</td></tr>'}</tbody>
-    <tfoot><tr><td colspan="3">계 <span class="small muted">(지급 건은 차감)</span></td><td class="num">${wonS(sumA)}</td><td class="num">${wonS(sumV)}</td><td class="num">${wonS(sumT)}</td><td></td><td class="num neg">${sumO?won(sumO):'-'}</td><td class="num">${sumE?won(sumE):'-'}</td><td class="num ${sumP<0?'neg':'pos'}">${wonS(sumP)}</td><td colspan="2"></td></tr></tfoot>
+    <tfoot><tr>${ui.selMode?'<td></td>':''}<td colspan="3">계 <span class="small muted">(지급 건은 차감)</span></td><td class="num">${wonS(sumA)}</td><td class="num">${wonS(sumV)}</td><td class="num">${wonS(sumT)}</td><td></td><td class="num neg">${sumO?won(sumO):'-'}</td><td class="num">${sumE?won(sumE):'-'}</td><td class="num ${sumP<0?'neg':'pos'}">${wonS(sumP)}</td><td colspan="2"></td></tr></tfoot>
   </table></div>`}</div>`;
 }
 
@@ -972,7 +979,7 @@ let _rzT=null, _wasMobile=MOBILE(); window.addEventListener('resize', ()=>{ clea
 if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
 /* ---------- events ---------- */
-document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>{ const n=b.dataset.nav; if(n==='unpaid'){ ui.tab='list'; ui.mode='unpaid'; } else { ui.tab=n; if(n==='list') ui.mode=''; } render(); window.scrollTo(0,0); }));
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>{ const n=b.dataset.nav; ui.selMode=false; ui.sel=new Set(); if(n==='unpaid'){ ui.tab='list'; ui.mode='unpaid'; } else { ui.tab=n; if(n==='list') ui.mode=''; } render(); window.scrollTo(0,0); }));
 $('#mnavNew').onclick = ()=>projectForm(null);
 $('#btnExport').onclick = ()=>{ download(`프로젝트관리_백업_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(state,null,1), 'application/json'); };
 $('#btnImport').onclick = ()=>$('#fileIn').click();
@@ -997,6 +1004,12 @@ $('#app').addEventListener('click', e=>{
     case 'goList': ui.tab='list'; ui.mode=''; ui.status=el.dataset.status||''; render(); window.scrollTo(0,0); break;
     case 'goStatus': ui.tab='list'; ui.mode=''; ui.status=el.dataset.status||''; ui.sort={key:'date',dir:-1}; render(); window.scrollTo(0,0); break;
     case 'goUnpaid': ui.tab='list'; ui.mode='unpaid'; ui.status=''; render(); window.scrollTo(0,0); break;
+    case 'selMode': ui.selMode=!ui.selMode; ui.sel=new Set(); render(); break;
+    case 'selToggle': { if(ui.sel.has(id)) ui.sel.delete(id); else ui.sel.add(id); render(); } break;
+    case 'selAll': { e.stopPropagation(); const ids=[...document.querySelectorAll('[data-act="selToggle"][data-id]')].map(x=>Number(x.dataset.id)); const all=ids.every(x=>ui.sel.has(x)); ui.sel=new Set(all?[]:ids); render(); } break;
+    case 'selNone': ui.sel=new Set(); render(); break;
+    case 'selDelete': { const n=ui.sel.size; if(!n) break; const names=state.projects.filter(x=>ui.sel.has(x.id)).slice(0,5).map(x=>x.name).join(', ');
+      if(confirm(`${n}개 프로젝트를 삭제할까요?\n${names}${n>5?' 외':''}\n\n견적서·실비 예산·지출·입금 기록도 함께 삭제되며 되돌릴 수 없습니다.`)){ state.projects = state.projects.filter(x=>!ui.sel.has(x.id)); if(ui.sel.has(ui.detailId)) ui.detailId=null; ui.sel=new Set(); ui.selMode=false; save(); render(); } } break;
     case 'goMode': ui.tab='list'; ui.mode=el.dataset.mode||''; ui.status=''; if(ui.mode==='expense') ui.sort={key:'exp',dir:-1}; else if(ui.tab!=='list') ui.sort={key:'date',dir:-1}; render(); window.scrollTo(0,0); break;
     case 'open': ui.detailId=id; ui.tab='detail'; ui.dtab='summary'; render(); window.scrollTo(0,0); break;
     case 'back': ui.tab='list'; render(); break;
