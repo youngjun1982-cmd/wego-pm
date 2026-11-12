@@ -238,8 +238,16 @@ body.resizing{cursor:col-resize;user-select:none}
 .list-row .t{flex:1;min-width:0}.list-row .t b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.list-row .t span{font-size:12px;color:var(--muted)}
 .list-row .amt{font-weight:700;white-space:nowrap}
 @media (max-width:820px){.layout{flex-direction:column}.side{width:auto;height:auto;position:static;flex-direction:row;flex-wrap:wrap;align-items:center;border-right:0;border-bottom:1px solid var(--card-border);padding:10px}.side .sec,.logo span{display:none}.nav{width:auto;padding:8px 10px}.side .bottom{margin-top:0;flex-direction:row;margin-left:auto}.main{padding:16px}}
+.mnav{display:none}
 @media (max-width:600px){
-  .main{padding:12px 12px 90px}
+  .main{padding:12px 12px calc(84px + env(safe-area-inset-bottom))}
+  .side{padding-top:calc(8px + env(safe-area-inset-top))}
+  .side .nav[data-nav]{display:none}
+  .mnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:35;background:var(--card);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-top:1px solid var(--card-border);padding:6px 4px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px rgba(0,0,0,.08)}
+  .mnav button{flex:1;border:0;background:transparent;color:var(--text2);font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 2px;border-radius:10px;cursor:pointer}
+  .mnav button svg{width:22px;height:22px}
+  .mnav button.on{color:var(--accent);font-weight:700}
+  .mnav #mnavNew{color:var(--accent2)}
   .kpis{grid-template-columns:1fr 1fr;gap:10px}
   .card{padding:14px;border-radius:16px}
   .kpi .v{font-size:19px}
@@ -287,6 +295,13 @@ body.resizing{cursor:col-resize;user-select:none}
 </aside>
 <main class="main" id="app"></main>
 </div>
+<nav class="mnav" id="mnav">
+  <button data-nav="dash"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8v9a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2z"/></svg>대시보드</button>
+  <button data-nav="list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>목록</button>
+  <button data-nav="unpaid"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>미수금</button>
+  <button data-nav="detail" id="mnavDetail" style="display:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg>상세</button>
+  <button id="mnavNew"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>추가</button>
+</nav>
 <div class="tooltip" id="tip"></div>
 <div class="modal-bg" id="modalBg"><div class="modal" id="modal"></div></div>
 <script>
@@ -375,8 +390,8 @@ function greeting(){ const h=new Date().getHours(); return h<12?'좋은 아침�
 
 /* ---------- rendering ---------- */
 function render(){
-  document.querySelectorAll('.nav[data-nav]').forEach(b=>b.classList.toggle('on', b.dataset.nav===(ui.tab==='list'&&ui.mode==='unpaid'?'unpaid':ui.tab)));
-  $('#navDetail').style.display = ui.detailId ? '' : 'none';
+  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('on', b.dataset.nav===(ui.tab==='list'&&ui.mode==='unpaid'?'unpaid':ui.tab)));
+  $('#navDetail').style.display = ui.detailId ? '' : 'none'; $('#mnavDetail').style.display = ui.detailId ? '' : 'none';
   $('#cntAll').textContent = filtered().length; const un = filtered().filter(p=>outstanding(p)>0).length; $('#cntUnpaid').textContent = un||'';
   const ys = years(); if(ui.year!=='all' && !ys.includes(+ui.year)) ui.year = ys.length? String(ys[0]) : 'all';
   const app = $('#app');
@@ -933,7 +948,8 @@ window.addEventListener('online', ()=>syncTick());
 if('serviceWorker' in navigator && /^https?:/.test(location.protocol)){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
 
 /* ---------- events ---------- */
-document.querySelectorAll('.nav[data-nav]').forEach(b=>b.addEventListener('click', ()=>{ const n=b.dataset.nav; if(n==='unpaid'){ ui.tab='list'; ui.mode='unpaid'; } else { ui.tab=n; if(n==='list') ui.mode=''; } render(); }));
+document.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>{ const n=b.dataset.nav; if(n==='unpaid'){ ui.tab='list'; ui.mode='unpaid'; } else { ui.tab=n; if(n==='list') ui.mode=''; } render(); window.scrollTo(0,0); }));
+$('#mnavNew').onclick = ()=>projectForm(null);
 $('#btnExport').onclick = ()=>{ download(`프로젝트관리_백업_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(state,null,1), 'application/json'); };
 $('#btnImport').onclick = ()=>$('#fileIn').click();
 if(NATIVE){ const b=$('#btnReveal'); b.style.display=''; b.onclick=()=>nativePost({type:'reveal'}); }
